@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tcm-edi-audit-core-new", "tcm-edi-audit-core-new\tcm-edi-audit-core-new.csproj", "{74A1843B-72BD-4E40-A5E2-78491629AD0E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74A1843B-72BD-4E40-A5E2-78491629AD0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A1843B-72BD-4E40-A5E2-78491629AD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A1843B-72BD-4E40-A5E2-78491629AD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A1843B-72BD-4E40-A5E2-78491629AD0E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD1D8651-A71D-4067-AD61-933F86FB2131}
+	EndGlobalSection
+EndGlobal
