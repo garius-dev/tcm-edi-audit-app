@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmValidatorResult));
             pnlMain = new Panel();
             pnlPositionsMain = new Panel();
             dgvValidatorResult = new DataGridView();
@@ -194,10 +195,10 @@
             btnExpandSelection.Location = new Point(8, 11);
             btnExpandSelection.Margin = new Padding(0);
             btnExpandSelection.Name = "btnExpandSelection";
-            btnExpandSelection.Size = new Size(366, 39);
+            btnExpandSelection.Size = new Size(206, 39);
             btnExpandSelection.TabIndex = 1;
             btnExpandSelection.Tag = "";
-            btnExpandSelection.Text = "  Corrigir arquivos automaticamente";
+            btnExpandSelection.Text = "  Expandir seleção";
             btnExpandSelection.TextAlign = ContentAlignment.MiddleLeft;
             btnExpandSelection.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnExpandSelection.UseVisualStyleBackColor = true;
@@ -274,6 +275,7 @@
             BackColor = Color.FromArgb(46, 80, 159);
             ClientSize = new Size(895, 695);
             Controls.Add(pnlMain);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmValidatorResult";
             Padding = new Padding(8);
             StartPosition = FormStartPosition.CenterScreen;

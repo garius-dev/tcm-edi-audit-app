@@ -62,6 +62,13 @@ namespace tcm_edi_audit_core_new
             dgvEdiFieldValidationSettings.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvEdiFieldValidationSettings.RowHeadersWidth = 35;
             dgvEdiFieldValidationSettings.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvEdiFieldValidationSettings.Columns[0].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[1].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[2].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[3].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[4].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[5].ReadOnly = true;
+            dgvEdiFieldValidationSettings.Columns[6].ReadOnly = true;
 
             //Definição das linhas gerais do EDI
             dgvCodeDefinitions.DataSource = new BindingSource { DataSource = _settings.EdiLineCodeDefinitions };

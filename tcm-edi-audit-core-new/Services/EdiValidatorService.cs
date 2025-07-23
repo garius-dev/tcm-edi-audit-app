@@ -32,7 +32,8 @@ namespace tcm_edi_audit_core_new.Services
 
             if (parseValidationResult)
             {
-                ValidateVehicleCodes(ediParseResult.Lines, result); //adicionar corrreção
+                //ValidateVehicleCodes(ediParseResult.Lines, result); //adicionar corrreção
+                ValidateVehicleCodes(ediParseResult.Lines, excelData, invoiceNumber, result, tryFixIt); //adicionar corrreção
                 ValidateCollectTypeCodes(ediParseResult.Lines, excelData, invoiceNumber, result, tryFixIt); //adiconar correção
                 ValidateBranchInformation(ediParseResult.Lines, result, tryFixIt);
                 ValidateCollectRequestCode(ediParseResult.Lines, excelData, invoiceNumber, result, tryFixIt);
@@ -106,6 +107,83 @@ namespace tcm_edi_audit_core_new.Services
             }
         }
 
+        private void ValidateVehicleCodes(List<EdiLine> lines, List<ExcelEntry> excelData, string invoiceNumber, EdiValidationResult result, bool tryFixIt)
+        {
+            var excelEntries = excelData
+                .Where(e => e.Invoice == invoiceNumber)
+                .ToList();
+
+            var expectedVehicle = excelEntries
+                .Select(e => e.ScheduledVehicle?.Trim().ToUpper())
+                .Distinct()
+                .SingleOrDefault();
+
+
+            foreach (var line in lines.Where(l => l.Code == "329"))
+            {
+                var expectedVehicleSetting = _settings.Vehicles.FirstOrDefault(w => w.Name == expectedVehicle);
+
+                if (expectedVehicleSetting == null)
+                {
+                    result.Errors.Add($"Linha {line.Id} (329): Veículo de nome '{expectedVehicle}' (da planilha) não encontrado nas configurações.");
+                    continue;
+                }
+
+                var column = line.Columns.ElementAtOrDefault(1);
+
+                if (column == null)
+                {
+                    result.Errors.Add($"Linha {line.Id} (329): Coluna '1' (Veículo) inválida.");
+                    continue;
+                }
+
+                var currentVehicleSetting = _settings.Vehicles.FirstOrDefault(w => w.Code == column.Value);
+
+                if (currentVehicleSetting == null)
+                {
+                    if (tryFixIt)
+                    {
+                        column.Value = expectedVehicleSetting.Code ?? string.Empty;
+                        result.Warnings.Add($"Linha {line.Id} (329): Código de veículo 'desconhecido' corrigido para '{expectedVehicle}' na fatura {invoiceNumber} (baseado na planilha).");
+                    }
+                    else
+                    {
+                        result.Errors.Add($"Linha {line.Id} (329): Veículo '{column?.Value}' inválido ou não configurado.");
+                    }
+
+                    continue;
+                }
+
+                if (currentVehicleSetting.Name != expectedVehicleSetting.Name)
+                {
+                    if (tryFixIt)
+                    {
+                        column.Value = expectedVehicleSetting.Code ?? string.Empty;
+                        result.Warnings.Add($"Linha {line.Id} (329): Código de veículo '{currentVehicleSetting.Name}' corrigido para '{expectedVehicle}' na fatura {invoiceNumber} (baseado na planilha).");
+
+                    }
+                    else
+                    {
+                        result.Errors.Add($"Linha {line.Id} (329): Código de veículo '{currentVehicleSetting.Name}' diferente do esperado '{expectedVehicle}' para a fatura {invoiceNumber}.");
+                    }
+                }
+            }
+        }
+
+        private void ValidateCollectTypeCodes(List<EdiLine> lines, EdiValidationResult result)
+        {
+            var validCollectTypes = _settings.CollectTypes.Select(c => c.Code).ToHashSet();
+
+            foreach (var line in lines.Where(l => l.Code == "329"))
+            {
+                var column = line.Columns.ElementAtOrDefault(14);
+                if (column == null || !validCollectTypes.Contains(column.Value))
+                {
+                    result.Errors.Add($"Linha {line.Id} (329): Tipo de coleta '{column?.Value}' inválido ou não configurado.");
+                }
+            }
+        }
+
         private void ValidateCollectTypeCodes(List<EdiLine> lines, List<ExcelEntry> excelData, string invoiceNumber, EdiValidationResult result, bool tryFixIt)
         {
             var excelEntries = excelData
@@ -113,7 +191,7 @@ namespace tcm_edi_audit_core_new.Services
                 .ToList();
 
             var expectedFlow = excelEntries
-                .Select(e => e.Flow?.Trim())
+                .Select(e => e.Flow?.Trim().ToUpper())
                 .Distinct()
                 .SingleOrDefault();
 
@@ -132,7 +210,7 @@ namespace tcm_edi_audit_core_new.Services
 
                 if (column == null)
                 {
-                    result.Errors.Add($"Linha {line.Id} (329): Coluna '14' inválida.");
+                    result.Errors.Add($"Linha {line.Id} (329): Coluna '14' (Fluxo) inválida.");
                     continue;
                 }
 

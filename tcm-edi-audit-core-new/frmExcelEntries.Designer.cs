@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmExcelEntries));
             pnlMain = new Panel();
             pnlTabDefinitions = new Panel();
             dgvExcelView = new DataGridView();
@@ -117,7 +118,7 @@
             lblFormTitle.Padding = new Padding(16, 0, 0, 0);
             lblFormTitle.Size = new Size(732, 64);
             lblFormTitle.TabIndex = 3;
-            lblFormTitle.Text = "EDI AUDIT";
+            lblFormTitle.Text = "EDI AUDIT - Excel";
             lblFormTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // pnlTopSideContainer
@@ -146,6 +147,7 @@
             BackColor = Color.FromArgb(46, 80, 159);
             ClientSize = new Size(1147, 681);
             Controls.Add(pnlMain);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmExcelEntries";
             Padding = new Padding(8);
             StartPosition = FormStartPosition.CenterScreen;

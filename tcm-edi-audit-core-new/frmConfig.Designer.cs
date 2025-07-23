@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConfig));
             pnlMain = new Panel();
             tabsConfigs = new TabControl();
             tabCodes = new TabPage();
@@ -58,6 +59,12 @@
             lblLineConfigTitle = new Label();
             tabExcel = new TabPage();
             pnlTabExcel = new Panel();
+            panel2 = new Panel();
+            dgvExcelConfig = new DataGridView();
+            lblExcelConfigTitle = new Label();
+            pnlExcelTop = new Panel();
+            txtWorkSheetName = new TextBox();
+            lblWorkSheetTitle = new Label();
             tabAdmins = new TabPage();
             pnlTabAdmins = new Panel();
             tblsAdminsMain = new TableLayoutPanel();
@@ -75,12 +82,6 @@
             lblFormTitle = new Label();
             pnlTopSideContainer = new Panel();
             picLogo = new PictureBox();
-            pnlExcelTop = new Panel();
-            lblWorkSheetTitle = new Label();
-            panel2 = new Panel();
-            dgvExcelConfig = new DataGridView();
-            lblExcelConfigTitle = new Label();
-            txtWorkSheetName = new TextBox();
             pnlMain.SuspendLayout();
             tabsConfigs.SuspendLayout();
             tabCodes.SuspendLayout();
@@ -103,6 +104,9 @@
             ((System.ComponentModel.ISupportInitialize)dgvCodeDefinitions).BeginInit();
             tabExcel.SuspendLayout();
             pnlTabExcel.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvExcelConfig).BeginInit();
+            pnlExcelTop.SuspendLayout();
             tabAdmins.SuspendLayout();
             pnlTabAdmins.SuspendLayout();
             tblsAdminsMain.SuspendLayout();
@@ -112,9 +116,6 @@
             ((System.ComponentModel.ISupportInitialize)picLoadingGif).BeginInit();
             pnlTopFrame.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
-            pnlExcelTop.SuspendLayout();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvExcelConfig).BeginInit();
             SuspendLayout();
             // 
             // pnlMain
@@ -489,6 +490,78 @@
             pnlTabExcel.Size = new Size(1162, 506);
             pnlTabExcel.TabIndex = 1;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.White;
+            panel2.Controls.Add(dgvExcelConfig);
+            panel2.Controls.Add(lblExcelConfigTitle);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 79);
+            panel2.Margin = new Padding(0);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(6);
+            panel2.Size = new Size(1162, 427);
+            panel2.TabIndex = 4;
+            // 
+            // dgvExcelConfig
+            // 
+            dgvExcelConfig.AllowUserToAddRows = false;
+            dgvExcelConfig.AllowUserToDeleteRows = false;
+            dgvExcelConfig.BackgroundColor = SystemColors.Control;
+            dgvExcelConfig.BorderStyle = BorderStyle.None;
+            dgvExcelConfig.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvExcelConfig.Dock = DockStyle.Fill;
+            dgvExcelConfig.Location = new Point(6, 36);
+            dgvExcelConfig.Name = "dgvExcelConfig";
+            dgvExcelConfig.RowHeadersWidth = 51;
+            dgvExcelConfig.Size = new Size(1150, 385);
+            dgvExcelConfig.TabIndex = 7;
+            // 
+            // lblExcelConfigTitle
+            // 
+            lblExcelConfigTitle.Dock = DockStyle.Top;
+            lblExcelConfigTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblExcelConfigTitle.ForeColor = Color.FromArgb(46, 80, 159);
+            lblExcelConfigTitle.Location = new Point(6, 6);
+            lblExcelConfigTitle.Margin = new Padding(0);
+            lblExcelConfigTitle.Name = "lblExcelConfigTitle";
+            lblExcelConfigTitle.Size = new Size(1150, 30);
+            lblExcelConfigTitle.TabIndex = 6;
+            lblExcelConfigTitle.Text = "Configuração do Excel:";
+            lblExcelConfigTitle.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // pnlExcelTop
+            // 
+            pnlExcelTop.BackColor = Color.Transparent;
+            pnlExcelTop.Controls.Add(txtWorkSheetName);
+            pnlExcelTop.Controls.Add(lblWorkSheetTitle);
+            pnlExcelTop.Dock = DockStyle.Top;
+            pnlExcelTop.Location = new Point(0, 0);
+            pnlExcelTop.Margin = new Padding(0);
+            pnlExcelTop.Name = "pnlExcelTop";
+            pnlExcelTop.Size = new Size(1162, 79);
+            pnlExcelTop.TabIndex = 1;
+            // 
+            // txtWorkSheetName
+            // 
+            txtWorkSheetName.Font = new Font("Segoe UI", 12F);
+            txtWorkSheetName.Location = new Point(6, 39);
+            txtWorkSheetName.Name = "txtWorkSheetName";
+            txtWorkSheetName.Size = new Size(519, 34);
+            txtWorkSheetName.TabIndex = 4;
+            // 
+            // lblWorkSheetTitle
+            // 
+            lblWorkSheetTitle.AutoSize = true;
+            lblWorkSheetTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblWorkSheetTitle.ForeColor = Color.FromArgb(46, 80, 159);
+            lblWorkSheetTitle.ImageAlign = ContentAlignment.MiddleLeft;
+            lblWorkSheetTitle.Location = new Point(6, 13);
+            lblWorkSheetTitle.Name = "lblWorkSheetTitle";
+            lblWorkSheetTitle.Size = new Size(122, 23);
+            lblWorkSheetTitle.TabIndex = 2;
+            lblWorkSheetTitle.Text = "Nome da aba:";
+            // 
             // tabAdmins
             // 
             tabAdmins.BackColor = Color.White;
@@ -704,78 +777,6 @@
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
             // 
-            // pnlExcelTop
-            // 
-            pnlExcelTop.BackColor = Color.Transparent;
-            pnlExcelTop.Controls.Add(txtWorkSheetName);
-            pnlExcelTop.Controls.Add(lblWorkSheetTitle);
-            pnlExcelTop.Dock = DockStyle.Top;
-            pnlExcelTop.Location = new Point(0, 0);
-            pnlExcelTop.Margin = new Padding(0);
-            pnlExcelTop.Name = "pnlExcelTop";
-            pnlExcelTop.Size = new Size(1162, 79);
-            pnlExcelTop.TabIndex = 1;
-            // 
-            // lblWorkSheetTitle
-            // 
-            lblWorkSheetTitle.AutoSize = true;
-            lblWorkSheetTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblWorkSheetTitle.ForeColor = Color.FromArgb(46, 80, 159);
-            lblWorkSheetTitle.ImageAlign = ContentAlignment.MiddleLeft;
-            lblWorkSheetTitle.Location = new Point(6, 13);
-            lblWorkSheetTitle.Name = "lblWorkSheetTitle";
-            lblWorkSheetTitle.Size = new Size(122, 23);
-            lblWorkSheetTitle.TabIndex = 2;
-            lblWorkSheetTitle.Text = "Nome da aba:";
-            // 
-            // panel2
-            // 
-            panel2.BackColor = Color.White;
-            panel2.Controls.Add(dgvExcelConfig);
-            panel2.Controls.Add(lblExcelConfigTitle);
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 79);
-            panel2.Margin = new Padding(0);
-            panel2.Name = "panel2";
-            panel2.Padding = new Padding(6);
-            panel2.Size = new Size(1162, 427);
-            panel2.TabIndex = 4;
-            // 
-            // dgvExcelConfig
-            // 
-            dgvExcelConfig.AllowUserToAddRows = false;
-            dgvExcelConfig.AllowUserToDeleteRows = false;
-            dgvExcelConfig.BackgroundColor = SystemColors.Control;
-            dgvExcelConfig.BorderStyle = BorderStyle.None;
-            dgvExcelConfig.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvExcelConfig.Dock = DockStyle.Fill;
-            dgvExcelConfig.Location = new Point(6, 36);
-            dgvExcelConfig.Name = "dgvExcelConfig";
-            dgvExcelConfig.RowHeadersWidth = 51;
-            dgvExcelConfig.Size = new Size(1150, 385);
-            dgvExcelConfig.TabIndex = 7;
-            // 
-            // lblExcelConfigTitle
-            // 
-            lblExcelConfigTitle.Dock = DockStyle.Top;
-            lblExcelConfigTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblExcelConfigTitle.ForeColor = Color.FromArgb(46, 80, 159);
-            lblExcelConfigTitle.Location = new Point(6, 6);
-            lblExcelConfigTitle.Margin = new Padding(0);
-            lblExcelConfigTitle.Name = "lblExcelConfigTitle";
-            lblExcelConfigTitle.Size = new Size(1150, 30);
-            lblExcelConfigTitle.TabIndex = 6;
-            lblExcelConfigTitle.Text = "Configuração do Excel:";
-            lblExcelConfigTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // txtWorkSheetName
-            // 
-            txtWorkSheetName.Font = new Font("Segoe UI", 12F);
-            txtWorkSheetName.Location = new Point(6, 39);
-            txtWorkSheetName.Name = "txtWorkSheetName";
-            txtWorkSheetName.Size = new Size(519, 34);
-            txtWorkSheetName.TabIndex = 4;
-            // 
             // frmConfig
             // 
             AutoScaleDimensions = new SizeF(120F, 120F);
@@ -783,6 +784,7 @@
             BackColor = Color.FromArgb(46, 80, 159);
             ClientSize = new Size(1186, 695);
             Controls.Add(pnlMain);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmConfig";
             Padding = new Padding(8);
             StartPosition = FormStartPosition.CenterScreen;
@@ -811,6 +813,10 @@
             ((System.ComponentModel.ISupportInitialize)dgvCodeDefinitions).EndInit();
             tabExcel.ResumeLayout(false);
             pnlTabExcel.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvExcelConfig).EndInit();
+            pnlExcelTop.ResumeLayout(false);
+            pnlExcelTop.PerformLayout();
             tabAdmins.ResumeLayout(false);
             pnlTabAdmins.ResumeLayout(false);
             tblsAdminsMain.ResumeLayout(false);
@@ -820,10 +826,6 @@
             ((System.ComponentModel.ISupportInitialize)picLoadingGif).EndInit();
             pnlTopFrame.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
-            pnlExcelTop.ResumeLayout(false);
-            pnlExcelTop.PerformLayout();
-            panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvExcelConfig).EndInit();
             ResumeLayout(false);
         }
 

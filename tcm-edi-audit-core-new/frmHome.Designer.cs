@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHome));
             pnlMain = new Panel();
             pnlHomeMain = new Panel();
             pnlSeparator03 = new Panel();
@@ -84,7 +85,7 @@
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Location = new Point(8, 8);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(779, 478);
+            pnlMain.Size = new Size(786, 477);
             pnlMain.TabIndex = 1;
             // 
             // pnlHomeMain
@@ -100,7 +101,7 @@
             pnlHomeMain.Margin = new Padding(0);
             pnlHomeMain.Name = "pnlHomeMain";
             pnlHomeMain.Padding = new Padding(6, 6, 6, 0);
-            pnlHomeMain.Size = new Size(779, 338);
+            pnlHomeMain.Size = new Size(786, 337);
             pnlHomeMain.TabIndex = 8;
             // 
             // pnlSeparator03
@@ -108,7 +109,7 @@
             pnlSeparator03.Dock = DockStyle.Top;
             pnlSeparator03.Location = new Point(6, 266);
             pnlSeparator03.Name = "pnlSeparator03";
-            pnlSeparator03.Size = new Size(767, 16);
+            pnlSeparator03.Size = new Size(774, 16);
             pnlSeparator03.TabIndex = 6;
             // 
             // pnlHomeSectionTop03
@@ -119,7 +120,7 @@
             pnlHomeSectionTop03.Margin = new Padding(0);
             pnlHomeSectionTop03.Name = "pnlHomeSectionTop03";
             pnlHomeSectionTop03.Padding = new Padding(6);
-            pnlHomeSectionTop03.Size = new Size(767, 76);
+            pnlHomeSectionTop03.Size = new Size(774, 76);
             pnlHomeSectionTop03.TabIndex = 5;
             // 
             // pnlHomeFile01
@@ -132,7 +133,7 @@
             pnlHomeFile01.Location = new Point(6, 6);
             pnlHomeFile01.Margin = new Padding(0);
             pnlHomeFile01.Name = "pnlHomeFile01";
-            pnlHomeFile01.Size = new Size(755, 64);
+            pnlHomeFile01.Size = new Size(762, 64);
             pnlHomeFile01.TabIndex = 0;
             // 
             // txtExcelFilePath
@@ -144,13 +145,13 @@
             txtExcelFilePath.Margin = new Padding(0);
             txtExcelFilePath.Name = "txtExcelFilePath";
             txtExcelFilePath.ReadOnly = true;
-            txtExcelFilePath.Size = new Size(697, 34);
+            txtExcelFilePath.Size = new Size(704, 34);
             txtExcelFilePath.TabIndex = 15;
             // 
             // lblSeparatorSection03
             // 
             lblSeparatorSection03.Dock = DockStyle.Right;
-            lblSeparatorSection03.Location = new Point(697, 30);
+            lblSeparatorSection03.Location = new Point(704, 30);
             lblSeparatorSection03.Name = "lblSeparatorSection03";
             lblSeparatorSection03.Size = new Size(8, 34);
             lblSeparatorSection03.TabIndex = 14;
@@ -160,7 +161,7 @@
             btnExcelFile.Cursor = Cursors.Hand;
             btnExcelFile.Dock = DockStyle.Right;
             btnExcelFile.Image = Properties.Resources.excel_file_18_24;
-            btnExcelFile.Location = new Point(705, 30);
+            btnExcelFile.Location = new Point(712, 30);
             btnExcelFile.Margin = new Padding(0);
             btnExcelFile.Name = "btnExcelFile";
             btnExcelFile.Size = new Size(50, 34);
@@ -176,7 +177,7 @@
             lblExcelFilePathTitle.Location = new Point(0, 0);
             lblExcelFilePathTitle.Margin = new Padding(0);
             lblExcelFilePathTitle.Name = "lblExcelFilePathTitle";
-            lblExcelFilePathTitle.Size = new Size(755, 30);
+            lblExcelFilePathTitle.Size = new Size(762, 30);
             lblExcelFilePathTitle.TabIndex = 4;
             lblExcelFilePathTitle.Text = "Arquivo Excel:";
             lblExcelFilePathTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -186,7 +187,7 @@
             pnlSeparator02.Dock = DockStyle.Top;
             pnlSeparator02.Location = new Point(6, 174);
             pnlSeparator02.Name = "pnlSeparator02";
-            pnlSeparator02.Size = new Size(767, 16);
+            pnlSeparator02.Size = new Size(774, 16);
             pnlSeparator02.TabIndex = 4;
             // 
             // pnlHomeSectionTop02
@@ -197,7 +198,7 @@
             pnlHomeSectionTop02.Margin = new Padding(0);
             pnlHomeSectionTop02.Name = "pnlHomeSectionTop02";
             pnlHomeSectionTop02.Padding = new Padding(6);
-            pnlHomeSectionTop02.Size = new Size(767, 76);
+            pnlHomeSectionTop02.Size = new Size(774, 76);
             pnlHomeSectionTop02.TabIndex = 3;
             // 
             // pnlHomeFolder02
@@ -210,7 +211,7 @@
             pnlHomeFolder02.Location = new Point(6, 6);
             pnlHomeFolder02.Margin = new Padding(0);
             pnlHomeFolder02.Name = "pnlHomeFolder02";
-            pnlHomeFolder02.Size = new Size(755, 64);
+            pnlHomeFolder02.Size = new Size(762, 64);
             pnlHomeFolder02.TabIndex = 0;
             // 
             // txtOutputPath
@@ -222,13 +223,13 @@
             txtOutputPath.Margin = new Padding(0);
             txtOutputPath.Name = "txtOutputPath";
             txtOutputPath.ReadOnly = true;
-            txtOutputPath.Size = new Size(697, 34);
+            txtOutputPath.Size = new Size(704, 34);
             txtOutputPath.TabIndex = 15;
             // 
             // lblSeparatorSection02
             // 
             lblSeparatorSection02.Dock = DockStyle.Right;
-            lblSeparatorSection02.Location = new Point(697, 30);
+            lblSeparatorSection02.Location = new Point(704, 30);
             lblSeparatorSection02.Name = "lblSeparatorSection02";
             lblSeparatorSection02.Size = new Size(8, 34);
             lblSeparatorSection02.TabIndex = 14;
@@ -238,7 +239,7 @@
             btnOutputPath.Cursor = Cursors.Hand;
             btnOutputPath.Dock = DockStyle.Right;
             btnOutputPath.Image = Properties.Resources.folder_icon;
-            btnOutputPath.Location = new Point(705, 30);
+            btnOutputPath.Location = new Point(712, 30);
             btnOutputPath.Margin = new Padding(0);
             btnOutputPath.Name = "btnOutputPath";
             btnOutputPath.Size = new Size(50, 34);
@@ -254,7 +255,7 @@
             lblOutputPathTitle.Location = new Point(0, 0);
             lblOutputPathTitle.Margin = new Padding(0);
             lblOutputPathTitle.Name = "lblOutputPathTitle";
-            lblOutputPathTitle.Size = new Size(755, 30);
+            lblOutputPathTitle.Size = new Size(762, 30);
             lblOutputPathTitle.TabIndex = 4;
             lblOutputPathTitle.Text = "Pasta dos Resultados:";
             lblOutputPathTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -264,7 +265,7 @@
             pnlSeparator01.Dock = DockStyle.Top;
             pnlSeparator01.Location = new Point(6, 82);
             pnlSeparator01.Name = "pnlSeparator01";
-            pnlSeparator01.Size = new Size(767, 16);
+            pnlSeparator01.Size = new Size(774, 16);
             pnlSeparator01.TabIndex = 2;
             // 
             // pnlHomeSectionTop01
@@ -275,7 +276,7 @@
             pnlHomeSectionTop01.Margin = new Padding(0);
             pnlHomeSectionTop01.Name = "pnlHomeSectionTop01";
             pnlHomeSectionTop01.Padding = new Padding(6);
-            pnlHomeSectionTop01.Size = new Size(767, 76);
+            pnlHomeSectionTop01.Size = new Size(774, 76);
             pnlHomeSectionTop01.TabIndex = 1;
             // 
             // pnlHomeFolder01
@@ -288,7 +289,7 @@
             pnlHomeFolder01.Location = new Point(6, 6);
             pnlHomeFolder01.Margin = new Padding(0);
             pnlHomeFolder01.Name = "pnlHomeFolder01";
-            pnlHomeFolder01.Size = new Size(755, 64);
+            pnlHomeFolder01.Size = new Size(762, 64);
             pnlHomeFolder01.TabIndex = 0;
             // 
             // txtFolderRootPath
@@ -300,13 +301,13 @@
             txtFolderRootPath.Margin = new Padding(0);
             txtFolderRootPath.Name = "txtFolderRootPath";
             txtFolderRootPath.ReadOnly = true;
-            txtFolderRootPath.Size = new Size(697, 34);
+            txtFolderRootPath.Size = new Size(704, 34);
             txtFolderRootPath.TabIndex = 15;
             // 
             // lblSeparatorSection01
             // 
             lblSeparatorSection01.Dock = DockStyle.Right;
-            lblSeparatorSection01.Location = new Point(697, 30);
+            lblSeparatorSection01.Location = new Point(704, 30);
             lblSeparatorSection01.Name = "lblSeparatorSection01";
             lblSeparatorSection01.Size = new Size(8, 34);
             lblSeparatorSection01.TabIndex = 14;
@@ -316,7 +317,7 @@
             btnRootFolderPath.Cursor = Cursors.Hand;
             btnRootFolderPath.Dock = DockStyle.Right;
             btnRootFolderPath.Image = Properties.Resources.folder_icon;
-            btnRootFolderPath.Location = new Point(705, 30);
+            btnRootFolderPath.Location = new Point(712, 30);
             btnRootFolderPath.Margin = new Padding(0);
             btnRootFolderPath.Name = "btnRootFolderPath";
             btnRootFolderPath.Size = new Size(50, 34);
@@ -332,7 +333,7 @@
             lblFolderRootPathTitle.Location = new Point(0, 0);
             lblFolderRootPathTitle.Margin = new Padding(0);
             lblFolderRootPathTitle.Name = "lblFolderRootPathTitle";
-            lblFolderRootPathTitle.Size = new Size(755, 30);
+            lblFolderRootPathTitle.Size = new Size(762, 30);
             lblFolderRootPathTitle.TabIndex = 4;
             lblFolderRootPathTitle.Text = "Pasta Raiz:";
             lblFolderRootPathTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -343,18 +344,18 @@
             pnlHomeFooter.Controls.Add(btnCheckFixFiles);
             pnlHomeFooter.Controls.Add(btnAudit);
             pnlHomeFooter.Dock = DockStyle.Bottom;
-            pnlHomeFooter.Location = new Point(0, 418);
+            pnlHomeFooter.Location = new Point(0, 417);
             pnlHomeFooter.Margin = new Padding(0);
             pnlHomeFooter.Name = "pnlHomeFooter";
             pnlHomeFooter.Padding = new Padding(6);
-            pnlHomeFooter.Size = new Size(779, 60);
+            pnlHomeFooter.Size = new Size(786, 60);
             pnlHomeFooter.TabIndex = 7;
             // 
             // picLoadingGif
             // 
             picLoadingGif.Dock = DockStyle.Right;
             picLoadingGif.Image = Properties.Resources.loading_35;
-            picLoadingGif.Location = new Point(471, 6);
+            picLoadingGif.Location = new Point(478, 6);
             picLoadingGif.Name = "picLoadingGif";
             picLoadingGif.Padding = new Padding(7);
             picLoadingGif.Size = new Size(52, 48);
@@ -396,7 +397,7 @@
             btnAudit.FlatStyle = FlatStyle.Flat;
             btnAudit.Font = new Font("Segoe UI", 13F);
             btnAudit.ForeColor = Color.White;
-            btnAudit.Location = new Point(523, 6);
+            btnAudit.Location = new Point(530, 6);
             btnAudit.Name = "btnAudit";
             btnAudit.Size = new Size(250, 48);
             btnAudit.TabIndex = 15;
@@ -414,7 +415,7 @@
             pnlTopFrame.Location = new Point(0, 0);
             pnlTopFrame.Name = "pnlTopFrame";
             pnlTopFrame.Padding = new Padding(8);
-            pnlTopFrame.Size = new Size(779, 80);
+            pnlTopFrame.Size = new Size(786, 80);
             pnlTopFrame.TabIndex = 6;
             // 
             // lblFormTitle
@@ -425,7 +426,7 @@
             lblFormTitle.Location = new Point(141, 8);
             lblFormTitle.Name = "lblFormTitle";
             lblFormTitle.Padding = new Padding(16, 0, 0, 0);
-            lblFormTitle.Size = new Size(440, 64);
+            lblFormTitle.Size = new Size(447, 64);
             lblFormTitle.TabIndex = 3;
             lblFormTitle.Text = "EDI AUDIT - Home";
             lblFormTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -434,7 +435,7 @@
             // 
             pnlTopSideContainer.Controls.Add(btnConfig);
             pnlTopSideContainer.Dock = DockStyle.Right;
-            pnlTopSideContainer.Location = new Point(581, 8);
+            pnlTopSideContainer.Location = new Point(588, 8);
             pnlTopSideContainer.Margin = new Padding(0);
             pnlTopSideContainer.Name = "pnlTopSideContainer";
             pnlTopSideContainer.Padding = new Padding(8, 8, 6, 8);
@@ -475,9 +476,11 @@
             AutoScaleDimensions = new SizeF(120F, 120F);
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 80, 159);
-            ClientSize = new Size(795, 494);
+            ClientSize = new Size(802, 493);
             Controls.Add(pnlMain);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
+            MinimumSize = new Size(820, 540);
             Name = "frmHome";
             Padding = new Padding(8);
             StartPosition = FormStartPosition.CenterScreen;
