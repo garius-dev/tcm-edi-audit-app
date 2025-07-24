@@ -96,5 +96,50 @@ namespace tcm_edi_audit_core_new.Extensions
             throw new NotImplementedException($"Erro ao tentar converter uma célula do Excel para moeda");
         }
 
+        public static string NormalizeText(this string input, bool toUpper = false, bool trim = false)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            // Normaliza (NFD separa acento da letra)
+            string normalized = input.Normalize(NormalizationForm.FormD);
+
+            // Remove acentos e diacríticos
+            var sb = new StringBuilder();
+            foreach (var c in normalized)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            string result = sb.ToString().Normalize(NormalizationForm.FormC);
+
+            // Substitui cedilha manualmente
+            result = result.Replace('ç', 'c').Replace('Ç', 'C');
+
+            // Substituição de símbolos especiais (pontuação etc.)
+            result = Regex.Replace(result, "[“”]", "\"");
+            result = result.Replace('–', '-');    // travessão
+            result = result.Replace('—', '-');    // em-dash
+            result = result.Replace('•', '*');    // bullet
+            result = result.Replace('´', '\'');   // acento agudo solto
+            result = result.Replace('‘', '\'').Replace('’', '\''); // aspas simples
+            result = result.Replace('«', '<').Replace('»', '>');   // aspas duplas francesas
+            result = result.Replace("…", "...");  // reticências
+
+            if (trim)
+                result = result.Trim();
+
+            if (toUpper)
+                result = result.ToUpperInvariant();
+
+            result = Regex.Replace(result, @"\s+", " ");
+
+            return result;
+        }
+
     }
 }

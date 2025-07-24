@@ -158,6 +158,8 @@ namespace tcm_edi_audit_core_new
             {
                 try
                 {
+                    _excelService.ParseValidExcelSheets(@"C:\Users\george-souza\Downloads\Protocolos - 3373 - 3379.xlsx");
+                    //_excelService.LoadMultiple(_localSettings.ReferenceExcelFilePath, _settings);
                     _excelEntries = _excelService.Load(_localSettings.ReferenceExcelFilePath, _settings);
                     if (preView)
                     {
@@ -329,6 +331,7 @@ namespace tcm_edi_audit_core_new
 
             try
             {
+                TryLoadExcelFile(false);
                 var filesValidated = await Task.Run(() => ValidateFiles(_localSettings.TryFixIt));
 
                 frmValidatorResult frmValidatorResult = new frmValidatorResult(filesValidated, _localSettings);

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,104 @@ namespace tcm_edi_audit_core_new.Extensions
             excelPatternColumnSettings.Add(new ExcelPatternColumnSettings("Protocol", 13, true));
 
             return excelPatternColumnSettings;
+        }
+
+        public static bool SetPropertyValueFromString(object obj, string propertyName, string value)
+        {
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+                return false;
+
+            var prop = obj.GetType().GetProperty(propertyName);
+            if (prop == null || !prop.CanWrite)
+                return false;
+
+            var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+            try
+            {
+                object? convertedValue = ParseFromString(value, targetType);
+                prop.SetValue(obj, convertedValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static object? ParseFromString(string value, Type targetType)
+        {
+            if (targetType == typeof(string))
+                return value;
+
+            if (targetType == typeof(int))
+                return int.Parse(value, CultureInfo.InvariantCulture);
+
+            if (targetType == typeof(decimal))
+                return decimal.Parse(value.Replace("R$", "").Trim(), NumberStyles.Any, new CultureInfo("pt-BR"));
+
+            if (targetType == typeof(double))
+                return double.Parse(value, CultureInfo.InvariantCulture);
+
+            if (targetType == typeof(float))
+                return float.Parse(value, CultureInfo.InvariantCulture);
+
+            if (targetType == typeof(bool))
+                return bool.Parse(value);
+
+            if (targetType == typeof(DateTime))
+                return DateTime.Parse(value, CultureInfo.InvariantCulture);
+
+            if (targetType == typeof(Guid))
+                return Guid.Parse(value);
+
+            if (targetType.IsEnum)
+                return Enum.Parse(targetType, value, ignoreCase: true);
+
+            if (targetType == typeof(string[]))
+                return value.Split(',').Select(s => s.Trim()).ToArray();
+
+            // Adicione mais tipos conforme necessário
+
+            throw new NotSupportedException($"Tipo não suportado: {targetType.Name}");
+        }
+
+        public static bool SetPropertyValueFromString2(object obj, string propertyName, string value)
+        {
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+                return false;
+
+            var prop = obj.GetType().GetProperty(propertyName);
+            if (prop == null || !prop.CanWrite)
+                return false;
+
+            try
+            {
+                var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+                object? convertedValue;
+
+                if (targetType == typeof(decimal))
+                {
+                    // Usa ponto como separador decimal, independente da cultura do sistema
+                    convertedValue = decimal.Parse(value, CultureInfo.InvariantCulture);
+                }
+                else if (targetType.IsEnum)
+                {
+                    convertedValue = Enum.Parse(targetType, value, ignoreCase: true);
+                }
+                else
+                {
+                    convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+                }
+
+                prop.SetValue(obj, convertedValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

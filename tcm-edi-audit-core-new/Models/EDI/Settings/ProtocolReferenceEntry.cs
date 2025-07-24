@@ -61,4 +61,21 @@ namespace tcm_edi_audit_core_new.Models.EDI.Settings
         public string Invoice { get; set; }
         public string Protocol { get; set; }
     }
+
+    public class ExcelEntryIndex
+    {
+        public int Flow { get; set; }
+        public int State { get; set; }
+        public int DistanceKm { get; set; }
+        public int ScheduledVehicle { get; set; }
+        public int RequestCode { get; set; }
+        public int Cva { get; set; }
+        public int CtePackage { get; set; }
+        public int MinutePackage { get; set; }
+        public int CtePiece { get; set; }
+        public int MinutePiece { get; set; }
+        public int TotalRevenue { get; set; }
+        public int Invoice { get; set; }
+        public int Protocol { get; set; }
+    }
 }
