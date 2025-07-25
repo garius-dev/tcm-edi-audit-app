@@ -14,176 +14,81 @@ namespace tcm_edi_audit_core_new.Settings.Services
 {
     public class ExcelService
     {
-        public class ExcelSheetRawData
+        
+        public List<ExcelSheetParsedResult<T>> ExtractStructuredDataFromExcel<T>(string filePath, AppSettings settings) where T : new()
         {
-            public string SheetName { get; set; } = string.Empty;
-            public List<List<string>> DataRows { get; set; } = new List<List<string>>();
-            public HeaderConfiguration MatchedHeader { get; set; } = new HeaderConfiguration();
-        }
+            string tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}{Path.GetExtension(filePath)}");
+            File.Copy(filePath, tempFilePath, overwrite: true);
 
-        public class ExcelSheetParsedResult
-        {
-            public string SheetName { get; set; } = string.Empty;
-            public List<ExcelEntry> Entries { get; set; } = new List<ExcelEntry>();
-        }
-
-        public class HeaderMapping
-        {
-            public string HeaderName { get; set; }
-            public string TargetProperty { get; set; }
-            public int ColumnIndex { get; set; }
-
-            public HeaderMapping(string headerName, string targetProperty, int columnIndex)
+            var headerConfigs = settings.ExcelHeaderProfiles.Select(p => new ExcelHeaderConfig
             {
-                this.HeaderName = headerName;
-                this.TargetProperty = targetProperty;
-                this.ColumnIndex = columnIndex;
-            }
-        }
+                Columns = p.Columns.Select((c, i) => new ExcelColumnMapping(c.Header, c.Property, i)).ToList()
+            }).ToList();
 
-        public class HeaderConfiguration
-        {
-            public List<HeaderMapping> Columns { get; set; } = new List<HeaderMapping>();
-        }
-
-
-        private HeaderConfiguration? MatchHeaders(List<HeaderConfiguration> knownHeaders, List<string> sheetHeaders)
-        {
-            if (!knownHeaders.IsNullOrEmpty() && !sheetHeaders.IsNullOrEmpty())
+            if (headerConfigs.IsNullOrEmpty())
             {
-                foreach (var headerSet in knownHeaders)
-                {
-                    var expectedHeaders = headerSet.Columns.Select(c => c.HeaderName.NormalizeText()).ToList();
-                    bool isMatch = sheetHeaders.Take(headerSet.Columns.Count).SequenceEqual(expectedHeaders);
-                    if (isMatch)
-                        return headerSet;
-                }
+                return new List<ExcelSheetParsedResult<T>>();
             }
 
-            return null;
-        }
-
-        public List<ExcelSheetParsedResult> ParseValidExcelSheets(string filePath)
-        {
-            var headerConfigurations = new List<HeaderConfiguration>();
-
-            // Primeiro modelo de cabeçalho
-            var headerSet1 = new List<HeaderMapping>
-            {
-                new("FLUXO", "Flow", 0),
-                new("FORNECEDOR", "", 1),
-                new("UF", "State", 2),
-                new("FAIXA KM", "DistanceKm", 3),
-                new("VEÍCULO PROGRAMADO", "ScheduledVehicle", 4),
-                new("CVA", "Cva", 5),
-                new("CTE EMBALAGEM", "CtePackage", 6),
-                new("MINUTA", "MinutePackage", 7),
-                new("CTE PEÇA", "CtePiece", 8),
-                new("MINUTA", "MinutePiece", 9),
-                new("RECEITA TOTAL", "TotalRevenue", 10),
-                new("FATURA", "Invoice", 11),
-                new("PROTOCOLO", "Protocol", 12),
-            };
-            headerConfigurations.Add(new HeaderConfiguration { Columns = headerSet1 });
-
-            // Segundo modelo
-            var headerSet2 = new List<HeaderMapping>
-            {
-                new("FLUXO", "Flow", 0),
-                new("FORNECEDOR", "", 1),
-                new("UF", "State", 2),
-                new("FAIXA KM", "DistanceKm", 3),
-                new("VEÍCULO PROGRAMADO", "ScheduledVehicle", 4),
-                new("CVA", "Cva", 5),
-                new("CTE EMBALAGEM", "CtePackage", 6),
-                new("MINUTA", "MinutePackage", 7),
-                new("CTE PEÇA", "CtePiece", 8),
-                new("MINUTA", "MinutePiece", 9),
-                new("RECEITA TOTAL", "TotalRevenue", 10),
-                new("STATUS EMISSÕES", "", 11),
-                new("FATURA", "Invoice", 12),
-                new("PROTOCOLO", "Protocol", 13),
-            };
-            headerConfigurations.Add(new HeaderConfiguration { Columns = headerSet2 });
-
-            // Terceiro modelo
-            var headerSet3 = new List<HeaderMapping>
-            {
-                new("DATA COLETA", "", 0),
-                new("ORIGEM", "", 1),
-                new("UF", "State", 2),
-                new("DESTINO", "", 3),
-                new("UF", "", 4),
-                new("STE", "", 5),
-                new("CVA", "Cva", 6),
-                new("COLETA", "Flow", 7),
-                new("VEÍCULO SOLICITADO", "ScheduledVehicle", 8),
-                new("KM", "DistanceKm", 9),
-                new("CTE EMBALAGEM", "CtePackage", 10),
-                new("MINUTA", "MinutePackage", 11),
-                new("CTE PEÇA", "CtePiece", 12),
-                new("MINUTA", "MinutePiece", 13),
-                new("RECEITA TOTAL", "TotalRevenue", 14),
-                new("STATUS EMISSÕES", "", 15),
-                new("FATURA", "Invoice", 16),
-                new("PROTOCOLO", "Protocol", 17),
-            };
-            headerConfigurations.Add(new HeaderConfiguration { Columns = headerSet3 });
-
-            var parsedResults = new List<ExcelSheetParsedResult>();
+            //var headerConfigs = GetPredefinedHeaders();
+            var parsedResults = new List<ExcelSheetParsedResult<T>>();
             var validSheets = new List<ExcelSheetRawData>();
 
-            using var workbook = new XLWorkbook(filePath);
-
-            foreach (var sheet in workbook.Worksheets)
+            try
             {
-                var range = sheet.RangeUsed();
-                if (range == null) continue;
+                using var workbook = new XLWorkbook(tempFilePath);
 
-                var headerRow = range.Row(1);
-                var sheetHeaders = headerRow.Cells().Select(c => c.GetString().NormalizeText(true, true)).ToList();
-
-                var matchedHeader = MatchHeaders(headerConfigurations, sheetHeaders);
-                if (matchedHeader == null) continue;
-
-                var sheetData = new ExcelSheetRawData { SheetName = sheet.Name, MatchedHeader = matchedHeader };
-
-                foreach (var row in range.RowsUsed().Skip(1))
+                foreach (var sheet in workbook.Worksheets)
                 {
-                    var rowValues = row.Cells(1, matchedHeader.Columns.Count)
-                                       .Select(c => c.GetString().Trim())
-                                       .ToList();
+                    var range = sheet.RangeUsed();
+                    if (range == null) continue;
 
-                    if (rowValues.All(string.IsNullOrWhiteSpace))
-                        continue;
+                    var headers = range.Row(1).Cells().Select(c => c.GetString().NormalizeText(true, true)).ToList();
+                    var matchedHeader = MatchHeaders(headerConfigs, headers);
+                    if (matchedHeader == null) continue;
 
-                    sheetData.DataRows.Add(rowValues);
-                }
+                    var sheetData = new ExcelSheetRawData { SheetName = sheet.Name, MatchedHeader = matchedHeader };
 
-                validSheets.Add(sheetData);
-            }
-
-            foreach (var sheet in validSheets)
-            {
-                var sheetResult = new ExcelSheetParsedResult { SheetName = sheet.SheetName };
-
-                foreach (var row in sheet.DataRows)
-                {
-                    var entry = new ExcelEntry();
-                    foreach (var column in sheet.MatchedHeader.Columns)
+                    foreach (var row in range.RowsUsed().Skip(1))
                     {
-                        ObjectExtensions.SetPropertyValueFromString(entry, column.TargetProperty, row[column.ColumnIndex]);
+                        var rowValues = row.Cells(1, matchedHeader.Columns.Count).Select(c => c.GetString().Trim()).ToList();
+                        if (rowValues.All(string.IsNullOrWhiteSpace)) continue;
+                        sheetData.DataRows.Add(rowValues);
                     }
-                    sheetResult.Entries.Add(entry);
+
+                    validSheets.Add(sheetData);
                 }
 
-                parsedResults.Add(sheetResult);
+                foreach (var sheet in validSheets)
+                {
+                    var sheetResult = new ExcelSheetParsedResult<T> { SheetName = sheet.SheetName };
+                    foreach (var row in sheet.DataRows)
+                    {
+                        var entry = ObjectExtensions.MapToObject<T>(row, sheet.MatchedHeader);
+                        sheetResult.Entries.Add(entry);
+                    }
+                    parsedResults.Add(sheetResult);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                try { File.Delete(tempFilePath); } catch { /* Ignore cleanup errors */ }
             }
 
             return parsedResults;
         }
 
+        private ExcelHeaderConfig? MatchHeaders(List<ExcelHeaderConfig> knownHeaders, List<string> headers)
+        {
+            return knownHeaders.FirstOrDefault(cfg =>
+                cfg.Columns.Select(c => c.HeaderName.NormalizeText()).SequenceEqual(headers.Take(cfg.Columns.Count)));
+        }
 
+        
 
 
         public List<ExcelEntry> Load(string filePath, AppSettings settings)
@@ -254,6 +159,87 @@ namespace tcm_edi_audit_core_new.Settings.Services
             return records;
         }
 
+
+        //public static class HeaderProfileSeeder
+        //{
+        //    public static async Task<bool> SeedExcelHeaderProfiles(ConfigManagerService configManager)
+        //    {
+        //        var settings = await configManager.LoadSettingsFromCloud();
+        //        if (settings == null) return false;
+
+        //        settings.ExcelHeaderProfiles = new List<ExcelHeaderProfile>
+        //{
+        //    new ExcelHeaderProfile
+        //    {
+        //        ProfileName = "Padrão 1",
+        //        Columns = new List<ExcelColumnMap>
+        //        {
+        //            new("FLUXO", "Flow"),
+        //            new("FORNECEDOR", ""),
+        //            new("UF", "State"),
+        //            new("FAIXA KM", "DistanceKm"),
+        //            new("VEÍCULO PROGRAMADO", "ScheduledVehicle"),
+        //            new("CVA", "Cva"),
+        //            new("CTE EMBALAGEM", "CtePackage"),
+        //            new("MINUTA", "MinutePackage"),
+        //            new("CTE PEÇA", "CtePiece"),
+        //            new("MINUTA", "MinutePiece"),
+        //            new("RECEITA TOTAL", "TotalRevenue"),
+        //            new("FATURA", "Invoice"),
+        //            new("PROTOCOLO", "Protocol")
+        //        }
+        //    },
+        //    new ExcelHeaderProfile
+        //    {
+        //        ProfileName = "Padrão 2 (com status)",
+        //        Columns = new List<ExcelColumnMap>
+        //        {
+        //            new("FLUXO", "Flow"),
+        //            new("FORNECEDOR", ""),
+        //            new("UF", "State"),
+        //            new("FAIXA KM", "DistanceKm"),
+        //            new("VEÍCULO PROGRAMADO", "ScheduledVehicle"),
+        //            new("CVA", "Cva"),
+        //            new("CTE EMBALAGEM", "CtePackage"),
+        //            new("MINUTA", "MinutePackage"),
+        //            new("CTE PEÇA", "CtePiece"),
+        //            new("MINUTA", "MinutePiece"),
+        //            new("RECEITA TOTAL", "TotalRevenue"),
+        //            new("STATUS EMISSÕES", ""),
+        //            new("FATURA", "Invoice"),
+        //            new("PROTOCOLO", "Protocol")
+        //        }
+        //    },
+        //    new ExcelHeaderProfile
+        //    {
+        //        ProfileName = "Coleta",
+        //        Columns = new List<ExcelColumnMap>
+        //        {
+        //            new("DATA COLETA", ""),
+        //            new("ORIGEM", ""),
+        //            new("UF", "State"),
+        //            new("DESTINO", ""),
+        //            new("UF", ""),
+        //            new("STE", ""),
+        //            new("CVA", "Cva"),
+        //            new("COLETA", "Flow"),
+        //            new("VEÍCULO SOLICITADO", "ScheduledVehicle"),
+        //            new("KM", "DistanceKm"),
+        //            new("CTE EMBALAGEM", "CtePackage"),
+        //            new("MINUTA", "MinutePackage"),
+        //            new("CTE PEÇA", "CtePiece"),
+        //            new("MINUTA", "MinutePiece"),
+        //            new("RECEITA TOTAL", "TotalRevenue"),
+        //            new("STATUS EMISSÕES", ""),
+        //            new("FATURA", "Invoice"),
+        //            new("PROTOCOLO", "Protocol")
+        //        }
+        //    }
+        //};
+
+        //        return await configManager.SaveSettingsToCloud(settings);
+        //    }
+        //}
 
     }
 }

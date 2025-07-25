@@ -31,7 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHome));
             pnlMain = new Panel();
             pnlHomeMain = new Panel();
+            panel1 = new Panel();
             pnlSeparator03 = new Panel();
+            btnLockWorksheet = new Button();
+            btnViewWorksheet = new Button();
+            label1 = new Label();
+            cmbWorksheet = new ComboBox();
             pnlHomeSectionTop03 = new Panel();
             pnlHomeFile01 = new Panel();
             txtExcelFilePath = new TextBox();
@@ -63,6 +68,7 @@
             picLogo = new PictureBox();
             pnlMain.SuspendLayout();
             pnlHomeMain.SuspendLayout();
+            pnlSeparator03.SuspendLayout();
             pnlHomeSectionTop03.SuspendLayout();
             pnlHomeFile01.SuspendLayout();
             pnlHomeSectionTop02.SuspendLayout();
@@ -86,11 +92,12 @@
             pnlMain.Location = new Point(6, 6);
             pnlMain.Margin = new Padding(2);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(631, 389);
+            pnlMain.Size = new Size(631, 447);
             pnlMain.TabIndex = 1;
             // 
             // pnlHomeMain
             // 
+            pnlHomeMain.Controls.Add(panel1);
             pnlHomeMain.Controls.Add(pnlSeparator03);
             pnlHomeMain.Controls.Add(pnlHomeSectionTop03);
             pnlHomeMain.Controls.Add(pnlSeparator02);
@@ -102,17 +109,78 @@
             pnlHomeMain.Margin = new Padding(0);
             pnlHomeMain.Name = "pnlHomeMain";
             pnlHomeMain.Padding = new Padding(5, 5, 5, 0);
-            pnlHomeMain.Size = new Size(631, 277);
+            pnlHomeMain.Size = new Size(631, 335);
             pnlHomeMain.TabIndex = 8;
+            // 
+            // panel1
+            // 
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(5, 275);
+            panel1.Margin = new Padding(2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(621, 13);
+            panel1.TabIndex = 7;
             // 
             // pnlSeparator03
             // 
+            pnlSeparator03.Controls.Add(btnLockWorksheet);
+            pnlSeparator03.Controls.Add(btnViewWorksheet);
+            pnlSeparator03.Controls.Add(label1);
+            pnlSeparator03.Controls.Add(cmbWorksheet);
             pnlSeparator03.Dock = DockStyle.Top;
             pnlSeparator03.Location = new Point(5, 214);
             pnlSeparator03.Margin = new Padding(2);
             pnlSeparator03.Name = "pnlSeparator03";
-            pnlSeparator03.Size = new Size(621, 13);
+            pnlSeparator03.Padding = new Padding(5);
+            pnlSeparator03.Size = new Size(621, 61);
             pnlSeparator03.TabIndex = 6;
+            // 
+            // btnLockWorksheet
+            // 
+            btnLockWorksheet.Cursor = Cursors.Hand;
+            btnLockWorksheet.Image = Properties.Resources.circle_solid_icon_24_24;
+            btnLockWorksheet.Location = new Point(321, 29);
+            btnLockWorksheet.Name = "btnLockWorksheet";
+            btnLockWorksheet.Size = new Size(40, 29);
+            btnLockWorksheet.TabIndex = 7;
+            btnLockWorksheet.UseVisualStyleBackColor = true;
+            btnLockWorksheet.Click += btnLockWorksheet_Click;
+            // 
+            // btnViewWorksheet
+            // 
+            btnViewWorksheet.Cursor = Cursors.Hand;
+            btnViewWorksheet.Image = Properties.Resources.eye_icon_24_24;
+            btnViewWorksheet.Location = new Point(275, 29);
+            btnViewWorksheet.Name = "btnViewWorksheet";
+            btnViewWorksheet.Size = new Size(40, 29);
+            btnViewWorksheet.TabIndex = 6;
+            btnViewWorksheet.UseVisualStyleBackColor = true;
+            btnViewWorksheet.Click += btnViewWorksheet_Click;
+            // 
+            // label1
+            // 
+            label1.Dock = DockStyle.Top;
+            label1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(46, 80, 159);
+            label1.Location = new Point(5, 5);
+            label1.Margin = new Padding(0);
+            label1.Name = "label1";
+            label1.Size = new Size(611, 24);
+            label1.TabIndex = 5;
+            label1.Text = "Planilha:";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // cmbWorksheet
+            // 
+            cmbWorksheet.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbWorksheet.Enabled = false;
+            cmbWorksheet.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbWorksheet.FormattingEnabled = true;
+            cmbWorksheet.Location = new Point(5, 29);
+            cmbWorksheet.Name = "cmbWorksheet";
+            cmbWorksheet.Size = new Size(264, 29);
+            cmbWorksheet.TabIndex = 0;
+            cmbWorksheet.SelectedIndexChanged += cmbWorksheet_SelectedIndexChanged;
             // 
             // pnlHomeSectionTop03
             // 
@@ -351,7 +419,7 @@
             pnlHomeFooter.Controls.Add(btnCheckFixFiles);
             pnlHomeFooter.Controls.Add(btnAudit);
             pnlHomeFooter.Dock = DockStyle.Bottom;
-            pnlHomeFooter.Location = new Point(0, 341);
+            pnlHomeFooter.Location = new Point(0, 399);
             pnlHomeFooter.Margin = new Padding(0);
             pnlHomeFooter.Name = "pnlHomeFooter";
             pnlHomeFooter.Padding = new Padding(5);
@@ -489,7 +557,7 @@
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 80, 159);
-            ClientSize = new Size(643, 401);
+            ClientSize = new Size(643, 459);
             Controls.Add(pnlMain);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
@@ -502,6 +570,7 @@
             Load += frmHome_Load;
             pnlMain.ResumeLayout(false);
             pnlHomeMain.ResumeLayout(false);
+            pnlSeparator03.ResumeLayout(false);
             pnlHomeSectionTop03.ResumeLayout(false);
             pnlHomeFile01.ResumeLayout(false);
             pnlHomeFile01.PerformLayout();
@@ -553,5 +622,10 @@
         private Panel pnlSeparator03;
         private PictureBox picLoadingGif;
         private Button btnConfig;
+        private Panel panel1;
+        private Label label1;
+        private ComboBox cmbWorksheet;
+        private Button btnLockWorksheet;
+        private Button btnViewWorksheet;
     }
 }

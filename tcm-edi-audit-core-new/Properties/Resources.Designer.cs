@@ -63,6 +63,16 @@ namespace tcm_edi_audit_core_new.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap circle_check_icon_24_24 {
+            get {
+                object obj = ResourceManager.GetObject("circle-check-icon-24-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap circle_green_16_16 {
             get {
                 object obj = ResourceManager.GetObject("circle-green-16-16", resourceCulture);
@@ -76,6 +86,16 @@ namespace tcm_edi_audit_core_new.Properties {
         internal static System.Drawing.Bitmap circle_red_16_16 {
             get {
                 object obj = ResourceManager.GetObject("circle-red-16-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap circle_solid_icon_24_24 {
+            get {
+                object obj = ResourceManager.GetObject("circle-solid-icon-24-24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -106,6 +126,16 @@ namespace tcm_edi_audit_core_new.Properties {
         internal static System.Drawing.Bitmap excel_file_18_24 {
             get {
                 object obj = ResourceManager.GetObject("excel-file-18-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap eye_icon_24_24 {
+            get {
+                object obj = ResourceManager.GetObject("eye-icon-24-24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

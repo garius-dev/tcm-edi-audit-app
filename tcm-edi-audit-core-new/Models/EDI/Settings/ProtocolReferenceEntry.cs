@@ -34,48 +34,73 @@ namespace tcm_edi_audit_core_new.Models.EDI.Settings
         }
     }
 
-    //public class ExcelPatternSettings
-    //{
-    //    [Browsable(false)]
-    //    public string? WorkSheetname { get; set; }
-
-    //    [Browsable(false)]
-    //    public bool SkipHeader { get; set; } = false;
-
-    //    public List<ExcelPatternColumnSettings> ColumnSettings { get; set; } = new List<ExcelPatternColumnSettings>();
-    //}
-
     public class ExcelEntry
     {
-        public string Flow { get; set; }
-        public string State { get; set; }
+        [Browsable(false)]
+        public string WorkSheet { get; set; } = string.Empty;
+        public string Flow { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
         public int DistanceKm { get; set; }
-        public string ScheduledVehicle { get; set; }
-        public string RequestCode { get; set; }
-        public string Cva { get; set; }
-        public string CtePackage { get; set; }
-        public string MinutePackage { get; set; }
-        public string CtePiece { get; set; }
-        public string MinutePiece { get; set; }
+        public string ScheduledVehicle { get; set; } = string.Empty;
+        public string RequestCode { get; set; } = string.Empty;
+        public string Cva { get; set; } = string.Empty;
+        public string CtePackage { get; set; } = string.Empty;
+        public string MinutePackage { get; set; } = string.Empty;
+        public string CtePiece { get; set; } = string.Empty;
+        public string MinutePiece { get; set; } = string.Empty;
         public decimal TotalRevenue { get; set; }
-        public string Invoice { get; set; }
-        public string Protocol { get; set; }
+        public string Invoice { get; set; } = string.Empty;
+        public string Protocol { get; set; } = string.Empty;
     }
 
-    public class ExcelEntryIndex
+    public class ExcelSheetRawData
     {
-        public int Flow { get; set; }
-        public int State { get; set; }
-        public int DistanceKm { get; set; }
-        public int ScheduledVehicle { get; set; }
-        public int RequestCode { get; set; }
-        public int Cva { get; set; }
-        public int CtePackage { get; set; }
-        public int MinutePackage { get; set; }
-        public int CtePiece { get; set; }
-        public int MinutePiece { get; set; }
-        public int TotalRevenue { get; set; }
-        public int Invoice { get; set; }
-        public int Protocol { get; set; }
+        public string SheetName { get; set; } = string.Empty;
+        public List<List<string>> DataRows { get; set; } = new();
+        public ExcelHeaderConfig MatchedHeader { get; set; } = new();
+    }
+
+    public class ExcelSheetParsedResult<T>
+    {
+        public string SheetName { get; set; } = string.Empty;
+        public List<T> Entries { get; set; } = new();
+    }
+
+    public class ExcelHeaderConfig
+    {
+        public List<ExcelColumnMapping> Columns { get; set; } = new();
+    }
+
+    public class ExcelColumnMapping
+    {
+        public string HeaderName { get; set; }
+        public string TargetProperty { get; set; }
+        public int ColumnIndex { get; set; }
+
+        public ExcelColumnMapping(string header, string property, int index)
+        {
+            HeaderName = header;
+            TargetProperty = property;
+            ColumnIndex = index;
+        }
+    }
+
+    public class ExcelHeaderProfile
+    {
+        public string ProfileName { get; set; } = string.Empty;
+
+        public List<ExcelColumnMap> Columns { get; set; } = new();
+    }
+
+    public class ExcelColumnMap
+    {
+        public string Header { get; set; }
+        public string Property { get; set; }
+
+        public ExcelColumnMap(string header, string property)
+        {
+            this.Header = header;
+            this.Property = property;
+        }
     }
 }

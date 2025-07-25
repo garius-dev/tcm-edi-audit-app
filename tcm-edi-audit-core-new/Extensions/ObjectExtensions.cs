@@ -69,6 +69,23 @@ namespace tcm_edi_audit_core_new.Extensions
             return excelPatternColumnSettings;
         }
 
+        public static T MapToObject<T>(List<string> row, ExcelHeaderConfig config) where T : new()
+        {
+            var obj = new T();
+
+            foreach (var map in config.Columns)
+            {
+                if (!string.IsNullOrWhiteSpace(map.TargetProperty))
+                {
+                    var value = row.ElementAtOrDefault(map.ColumnIndex);
+                    if (value == null) { continue; }
+                    ObjectExtensions.SetPropertyValueFromString(obj, map.TargetProperty, value);
+                }
+            }
+
+            return obj;
+        }
+
         public static bool SetPropertyValueFromString(object obj, string propertyName, string value)
         {
             if (obj == null || string.IsNullOrWhiteSpace(propertyName))
@@ -94,37 +111,37 @@ namespace tcm_edi_audit_core_new.Extensions
 
         private static object? ParseFromString(string value, Type targetType)
         {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+
             if (targetType == typeof(string))
                 return value;
 
-            if (targetType == typeof(int))
-                return int.Parse(value, CultureInfo.InvariantCulture);
+            if (targetType == typeof(int) && int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var i))
+                return i;
 
-            if (targetType == typeof(decimal))
-                return decimal.Parse(value.Replace("R$", "").Trim(), NumberStyles.Any, new CultureInfo("pt-BR"));
+            if (targetType == typeof(decimal) && decimal.TryParse(value.Replace("R$", "").Trim(), NumberStyles.Any, new CultureInfo("pt-BR"), out var dec))
+                return dec;
 
-            if (targetType == typeof(double))
-                return double.Parse(value, CultureInfo.InvariantCulture);
+            if (targetType == typeof(double) && double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
+                return d;
 
-            if (targetType == typeof(float))
-                return float.Parse(value, CultureInfo.InvariantCulture);
+            if (targetType == typeof(float) && float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var f))
+                return f;
 
-            if (targetType == typeof(bool))
-                return bool.Parse(value);
+            if (targetType == typeof(bool) && bool.TryParse(value, out var b))
+                return b;
 
-            if (targetType == typeof(DateTime))
-                return DateTime.Parse(value, CultureInfo.InvariantCulture);
+            if (targetType == typeof(DateTime) && DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                return dt;
 
-            if (targetType == typeof(Guid))
-                return Guid.Parse(value);
+            if (targetType == typeof(Guid) && Guid.TryParse(value, out var g))
+                return g;
 
             if (targetType.IsEnum)
                 return Enum.Parse(targetType, value, ignoreCase: true);
 
             if (targetType == typeof(string[]))
                 return value.Split(',').Select(s => s.Trim()).ToArray();
-
-            // Adicione mais tipos conforme necessário
 
             throw new NotSupportedException($"Tipo não suportado: {targetType.Name}");
         }

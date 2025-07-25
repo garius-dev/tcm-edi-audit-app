@@ -42,6 +42,8 @@ namespace tcm_edi_audit_core_new.Models.Settings
         public List<EdiFieldDefinitionSettings> EdiFieldDefinitions { get; set; }
         public List<EdiLineCodeDefinitionSettings> EdiLineCodeDefinitions { get; set; }
 
+        public List<ExcelHeaderProfile> ExcelHeaderProfiles { get; set; } = new();
+
         public EdiLineCodeDefinitionSettings GetCodeDefinition(string code)
         {
             return EdiLineCodeDefinitions.FirstOrDefault(w => w.Code == code);
