@@ -378,6 +378,8 @@ namespace tcm_edi_audit_core_new
                     foreach (DataGridViewColumn col in dgv.Columns)
                         col.ReadOnly = false;
 
+                    dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold);
+
                     container_Grid.Controls.Add(dgv);
 
                     // >>> Divisor entre TextBox e Grid <<<
@@ -399,10 +401,11 @@ namespace tcm_edi_audit_core_new
                     Button btnDeleteTab = new Button()
                     {
                         Dock = DockStyle.Right,
-                        Width = 30,
+                        Width = 50,
                         Image = Properties.Resources.trash_bin_20_20,
                         ImageAlign = ContentAlignment.MiddleCenter,
                         Cursor = Cursors.Hand,
+
                         //Text = "X",
                         //BackColor = System.Drawing.Color.FromArgb(220, 53, 69),
                         //ForeColor = System.Drawing.Color.White,
