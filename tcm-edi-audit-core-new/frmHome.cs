@@ -99,16 +99,15 @@ namespace tcm_edi_audit_core_new
 
         private bool TryLoadExcelFile(bool forceUpload)
         {
-            cmbWorksheet.Enabled = false;
-            btnViewWorksheet.Enabled = false;
-            btnLockWorksheet.Enabled = false;
+            cmbWorksheet.SafeInvoke(() => cmbWorksheet.Enabled = false);
+            btnViewWorksheet.SafeInvoke(() => btnViewWorksheet.Enabled = false);
+            btnLockWorksheet.SafeInvoke(() => btnLockWorksheet.Enabled = false);
 
             if (!forceUpload)
             {
                 if (_excelWorksheets.IsNullOrEmpty()) { return false; }
 
                 PopulateComboboxes();
-
                 return true;
             }
 
@@ -119,7 +118,6 @@ namespace tcm_edi_audit_core_new
                     _excelWorksheets = _excelService.ExtractStructuredDataFromExcel<ExcelEntry>(_localSettings.ReferenceExcelFilePath, _settings);
 
                     PopulateComboboxes();
-
                     return true;
 
                 }
@@ -136,6 +134,38 @@ namespace tcm_edi_audit_core_new
             return false;
         }
 
+        public void PopulateComboboxes()
+        {
+            if (!_excelWorksheets.IsNullOrEmpty())
+            {
+                var worksheets = _excelWorksheets
+                            .Select(s => s.SheetName?.Trim().ToUpper())
+                            .Distinct()
+                            .OrderBy(c => c)
+                            .ToList();
+
+                //worksheets.Insert(0, "Selecione uma planilha");
+                worksheets.Insert(0, "TODOS");
+
+                cmbWorksheet.SafeInvoke(() => cmbWorksheet.DataSource = null);
+                cmbWorksheet.SafeInvoke(() => cmbWorksheet.DataSource = worksheets);
+                cmbWorksheet.SafeInvoke(() => cmbWorksheet.Enabled = true);
+
+                btnViewWorksheet.SafeInvoke(() => btnViewWorksheet.Enabled = true);
+                btnLockWorksheet.SafeInvoke(() => btnLockWorksheet.Enabled = true);
+            }
+            else
+            {
+                cmbWorksheet.SafeInvoke(() => cmbWorksheet.DataSource = null);
+                cmbWorksheet.SafeInvoke(() => cmbWorksheet.Enabled = false);
+
+                btnViewWorksheet.SafeInvoke(() => btnViewWorksheet.Enabled = false);
+                btnLockWorksheet.SafeInvoke(() => btnLockWorksheet.Enabled = false);
+            }
+
+            btnLockWorksheet.SetCheckState(false, Properties.Resources.circle_check_icon_green_24_24, Properties.Resources.circle_solid_icon_24_24);
+        }
+
         private bool TrySetDefaultWorkSheet(string? workSheet = null)
         {
 
@@ -145,14 +175,14 @@ namespace tcm_edi_audit_core_new
                 btnAudit.Enabled = false;
             }
 
-            if (workSheet == "Todos")
+            if (workSheet == "TODOS")
             {
                 _excelEntries = _excelWorksheets.SelectMany(w => w.Entries).ToList();
                 return true;
             }
             else
             {
-                var foundWorkSheet = _excelWorksheets.FirstOrDefault(w => w.SheetName == workSheet);
+                var foundWorkSheet = _excelWorksheets.FirstOrDefault(w => w.SheetName?.Trim().ToUpper() == workSheet?.Trim().ToUpper());
 
                 if (foundWorkSheet != null)
                 {
@@ -168,36 +198,38 @@ namespace tcm_edi_audit_core_new
             }
         }
 
-        public void PopulateComboboxes()
+
+
+        public void TryEnableAuditButton()
         {
-            if (!_excelWorksheets.IsNullOrEmpty())
+            bool buttonEnabled = true;
+
+            if (string.IsNullOrEmpty(txtFolderRootPath.Text?.Trim()))
             {
-                var worksheets = _excelWorksheets
-                            .Select(s => s.SheetName)
-                            .Distinct()
-                            .OrderBy(c => c)
-                            .ToList();
-
-                //worksheets.Insert(0, "Selecione uma planilha");
-                worksheets.Insert(0, "Todos");
-
-                cmbWorksheet.DataSource = null;
-                cmbWorksheet.DataSource = worksheets;
-                cmbWorksheet.Enabled = true;
-
-                btnViewWorksheet.Enabled = true;
-                btnLockWorksheet.Enabled = true;
-            }
-            else
-            {
-                cmbWorksheet.DataSource = null;
-                cmbWorksheet.Enabled = false;
-
-                btnViewWorksheet.Enabled = false;
-                btnLockWorksheet.Enabled = false;
+                buttonEnabled = false;
             }
 
-            btnLockWorksheet.SetCheckState(false, Properties.Resources.circle_check_icon_24_24, Properties.Resources.circle_solid_icon_24_24);
+            if (string.IsNullOrEmpty(txtOutputPath.Text?.Trim()))
+            {
+                buttonEnabled = false;
+            }
+
+            if (string.IsNullOrEmpty(txtExcelFilePath.Text?.Trim()))
+            {
+                buttonEnabled = false;
+            }
+
+            if (_excelWorksheets.IsNullOrEmpty())
+            {
+                buttonEnabled = false;
+            }
+
+            if (_excelEntries.IsNullOrEmpty())
+            {
+                buttonEnabled = false;
+            }
+
+            btnAudit.Enabled = buttonEnabled;
         }
 
         private async Task<List<EdiValidationResult>> ValidateFiles(bool tryFixIt = false)
@@ -209,6 +241,7 @@ namespace tcm_edi_audit_core_new
             ExcelService excelService = new ExcelService();
             List<EdiValidationResult> validatonResults = new List<EdiValidationResult>();
 
+            //TryLoadExcelFile(false);
             List<ExcelEntry> excelEntries = _excelEntries;
 
             if (!excelEntries.IsNullOrEmpty())
@@ -248,6 +281,9 @@ namespace tcm_edi_audit_core_new
         private void btnCheckFixFiles_Click(object sender, EventArgs e)
         {
             btnCheckFixFiles.SwapCheckState(Properties.Resources.sqare_check_icon_dark, Properties.Resources.sqare_uncheck_icon_dark);
+
+            _localSettings.TryFixIt = btnCheckFixFiles.GetCheckState();
+            _configManagerService.SaveSettings(_localSettings);
         }
 
         private async void btnConfig_Click(object sender, EventArgs e)
@@ -277,6 +313,8 @@ namespace tcm_edi_audit_core_new
             txtFolderRootPath.Text = _localSettings.SourceFolderPath;
             txtOutputPath.Text = _localSettings.OutputFolderPath;
 
+            btnCheckFixFiles.SetCheckState(_localSettings.TryFixIt, Properties.Resources.sqare_check_icon_dark, Properties.Resources.sqare_uncheck_icon_dark);
+
             this.Enabled = true;
         }
 
@@ -296,6 +334,8 @@ namespace tcm_edi_audit_core_new
                 _localSettings.SourceFolderPath = selectedPath;
                 _configManagerService.SaveSettings(_localSettings);
             }
+
+            TryEnableAuditButton();
         }
 
         private void btnOutputPath_Click(object sender, EventArgs e)
@@ -314,6 +354,8 @@ namespace tcm_edi_audit_core_new
                 _localSettings.OutputFolderPath = selectedPath;
                 _configManagerService.SaveSettings(_localSettings);
             }
+
+            TryEnableAuditButton();
 
         }
 
@@ -334,20 +376,21 @@ namespace tcm_edi_audit_core_new
 
                     if (TryLoadExcelFile(true))
                     {
-                        
                     }
                 }
             }
+
+            TryEnableAuditButton();
+
         }
 
         private async void btnAudit_Click(object sender, EventArgs e)
         {
-            this.Invoke((MethodInvoker)(() =>
-            {
-                btnAudit.Enabled = false;
-                btnAudit.Text = "Processando...";
-                picLoadingGif.Visible = true;
-            }));
+
+
+            btnAudit.SafeInvoke(() => btnAudit.Enabled = false);
+            btnAudit.SafeInvoke(() => btnAudit.Text = "Processando...");
+            picLoadingGif.SafeInvoke(() => picLoadingGif.Visible = true);
 
             await Task.Delay(1);
 
@@ -365,17 +408,17 @@ namespace tcm_edi_audit_core_new
             }
             finally
             {
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    btnAudit.Text = "Auditar";
-                    btnAudit.Enabled = true;
-                    picLoadingGif.Visible = false;
-                }));
+                btnAudit.SafeInvoke(() => btnAudit.Text = "Auditar");
+                btnAudit.SafeInvoke(() => btnAudit.Enabled = true);
+                picLoadingGif.SafeInvoke(() => picLoadingGif.Visible = false);
             }
         }
 
         private void cmbWorksheet_SelectedIndexChanged(object sender, EventArgs e)
         {
+            btnLockWorksheet.SetCheckState(false, Properties.Resources.circle_check_icon_green_24_24, Properties.Resources.circle_solid_icon_24_24);
+            _excelEntries = new List<ExcelEntry>();
+            TryEnableAuditButton();
 
         }
 
@@ -383,12 +426,24 @@ namespace tcm_edi_audit_core_new
 
         private void btnLockWorksheet_Click(object sender, EventArgs e)
         {
-            btnLockWorksheet.SwapCheckState(Properties.Resources.circle_check_icon_24_24, Properties.Resources.circle_solid_icon_24_24);
+            btnLockWorksheet.SwapCheckState(Properties.Resources.circle_check_icon_green_24_24, Properties.Resources.circle_solid_icon_24_24);
+            if (btnLockWorksheet.GetCheckState())
+            {
+                TrySetDefaultWorkSheet(cmbWorksheet.SelectedItem?.ToString());
+            }
+            else
+            {
+                _excelEntries = new List<ExcelEntry>();
+            }
+
+            TryEnableAuditButton();
+
         }
 
         private void btnViewWorksheet_Click(object sender, EventArgs e)
         {
-
+            frmExcelEntries frmExcelEntries = new frmExcelEntries(_excelWorksheets, cmbWorksheet.SelectedItem?.ToString());
+            frmExcelEntries.ShowDialog();
         }
     }
 }

@@ -29,5 +29,49 @@ namespace tcm_edi_audit_core_new.Extensions
             bool currentState = button.GetCheckState();
             button.SetCheckState(!currentState, checkedImage, uncheckedImage);
         }
+
+        //public static void SafeInvoke(Control control, Action action)
+        //{
+        //    if (control.InvokeRequired)
+        //    {
+        //        control.Invoke(action);
+        //    }
+        //    else
+        //    {
+        //        action();
+        //    }
+        //}
+
+        public static IEnumerable<T> FindControls<T>(Control parent) where T : Control
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is T typedControl)
+                    yield return typedControl;
+
+                if (control.HasChildren)
+                {
+                    foreach (var child in FindControls<T>(control))
+                    {
+                        yield return child;
+                    }
+                }
+            }
+        }
+
+        public static void SafeInvoke(this Control control, Action action)
+        {
+            if (control == null || control.IsDisposed)
+                return;
+
+            if (control.InvokeRequired)
+            {
+                control.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
     }
 }

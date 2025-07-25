@@ -118,20 +118,26 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="sqare-check-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sqare-check-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sqare-check-icon-dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sqare-check-icon-dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="loading-35" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\loading-35.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="circle-solid-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circle-solid-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sqare-uncheck-icon-dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sqare-uncheck-icon-dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="folder-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folder-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="circle-check-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circle-check-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="circle-yellow-16-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circle-yellow-16-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="circle-red-16-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circle-red-16-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sqare-check-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sqare-check-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="circle-green-16-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\circle-green-16-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,28 +145,31 @@
   <data name="sqare-uncheck-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sqare-uncheck-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="circle-red-16-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\circle-red-16-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="loading-35" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\loading-35.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cog-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cog-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="circle-check-icon-green-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\circle-check-icon-green-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="excel-file-18-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\excel-file-18-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="trash-bin-20-20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\trash-bin-20-20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cog-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cog-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="logo_novo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_novo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="circle-yellow-16-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\circle-yellow-16-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sqare-check-icon-dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sqare-check-icon-dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="eye-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eye-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="circle-check-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\circle-check-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="circle-solid-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\circle-solid-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="plus-icon-24-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus-icon-24-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +12,7 @@ using tcm_edi_audit_core_new.Extensions;
 using tcm_edi_audit_core_new.Models.EDI.Settings;
 using tcm_edi_audit_core_new.Models.Settings;
 using tcm_edi_audit_core_new.Settings.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace tcm_edi_audit_core_new
 {
@@ -84,16 +86,16 @@ namespace tcm_edi_audit_core_new
             dgvAdmins.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
             //Excel Patterns            
-            if(_settings.ExcelPatternColumnSettings == null)
-            {
-                _settings.ExcelPatternColumnSettings = ObjectExtensions.LoadDefaultExcelColumns();
-            }
+            //if(_settings.ExcelPatternColumnSettings == null)
+            //{
+            //    _settings.ExcelPatternColumnSettings = ObjectExtensions.LoadDefaultExcelColumns();
+            //}
 
-            dgvExcelConfig.DataSource = new BindingSource { DataSource = _settings.ExcelPatternColumnSettings };
-            dgvExcelConfig.Columns[0].ReadOnly = true;
-            dgvExcelConfig.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvExcelConfig.RowHeadersWidth = 35;
-            dgvExcelConfig.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            //dgvExcelConfig.DataSource = new BindingSource { DataSource = _settings.ExcelPatternColumnSettings };
+            //dgvExcelConfig.Columns[0].ReadOnly = true;
+            //dgvExcelConfig.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //dgvExcelConfig.RowHeadersWidth = 35;
+            //dgvExcelConfig.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
         }
 
@@ -153,10 +155,311 @@ namespace tcm_edi_audit_core_new
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
+            btnSave.Enabled = false;
             LoadDatagridView();
             LoadComboBox();
             LoadControls();
+            LoadExcelConfig();
+            btnSave.Enabled = true;
         }
+
+        public void AddExcelProfile()
+        {
+
+            if (_settings == null) return;
+
+            TabPage tabPage = new TabPage("New")
+            {
+                Padding = new Padding(8)
+            };
+
+            // >>> DataGridView Container <<<
+            Panel container_Grid = new Panel()
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(0)
+            };
+
+            DataGridView dgv = new DataGridView
+            {
+                Name = Guid.NewGuid().ToString(),
+                Dock = DockStyle.Fill,
+                BorderStyle = BorderStyle.None,
+                BackgroundColor = System.Drawing.Color.White,
+                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                RowHeadersWidth = 35,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing,
+                AllowUserToAddRows = true,
+                AllowUserToDeleteRows = true,
+                ReadOnly = false
+            };
+
+            var bindingList = new BindingList<ExcelColumnMap>(new List<ExcelColumnMap>());
+            dgv.DataSource = bindingList;
+
+            foreach (DataGridViewColumn col in dgv.Columns)
+                col.ReadOnly = false;
+
+            container_Grid.Controls.Add(dgv);
+
+            // >>> Divisor entre TextBox e Grid <<<
+            Panel divisor_02 = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 8
+            };
+
+            // >>> TextBox <<<
+            TextBox txt = new TextBox()
+            {
+                Dock = DockStyle.Fill,
+            };
+            txt.Font = new System.Drawing.Font(txt.Font.FontFamily, 12, txt.Font.Style);
+
+            // >>> Delete Button <<<
+            Button btnDeleteTab = new Button()
+            {
+                Dock = DockStyle.Right,
+                Width = 30,
+                Image = Properties.Resources.trash_bin_20_20,
+                ImageAlign = ContentAlignment.MiddleCenter,
+                Cursor = Cursors.Hand,
+                //Text = "X",
+                //BackColor = System.Drawing.Color.FromArgb(220, 53, 69),
+                //ForeColor = System.Drawing.Color.White,
+                //FlatStyle = FlatStyle.Flat
+            };
+            btnDeleteTab.FlatAppearance.BorderSize = 0;
+
+            // Evento de deletar a TabPage
+            btnDeleteTab.Click += (s, e) =>
+            {
+                if (tabControlExcelContainer.TabPages.Count > 1)
+                {
+                    tabControlExcelContainer.TabPages.Remove(tabPage);
+
+                }
+            };
+
+            // >>> Horizontal Container for TextBox + Button <<<
+            Panel horizontalContainer = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 30
+            };
+            horizontalContainer.Controls.Add(txt);
+            horizontalContainer.Controls.Add(btnDeleteTab);
+
+            // >>> Label do título <<<
+            Label lbl = new Label()
+            {
+                Dock = DockStyle.Top,
+                Text = "Nome do perfil:",
+                AutoSize = false,
+                Height = 24,
+                ForeColor = System.Drawing.Color.FromArgb(46, 80, 159),
+                Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold)
+            };
+
+            // >>> Divisor topo <<<
+            Panel divisor_01 = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 8
+            };
+
+            // >>> Ordem de Adição (Bottom-Up) <<<
+            tabPage.Controls.Add(container_Grid);    // Fill (DGV)
+            tabPage.Controls.Add(divisor_02);        // Spacer
+            tabPage.Controls.Add(horizontalContainer); // TextBox + Button
+            tabPage.Controls.Add(lbl);               // Title
+            tabPage.Controls.Add(divisor_01);        // Top Spacer
+
+            tabControlExcelContainer.Controls.Add(tabPage);
+
+            tabControlExcelContainer.SelectedTab = tabPage;
+        }
+
+        public List<ExcelHeaderProfile> GetCurrentExcelConfig()
+        {
+            List<ExcelHeaderProfile> profiles = new List<ExcelHeaderProfile>();
+
+            foreach (TabPage tabPage in tabControlExcelContainer.TabPages)
+            {
+                var dgv = ControlsExtensions.FindControls<DataGridView>(tabPage).FirstOrDefault(); //tabPage.Controls.OfType<DataGridView>().FirstOrDefault();
+                var txt = ControlsExtensions.FindControls<TextBox>(tabPage).FirstOrDefault();
+
+                if(dgv != null)
+                {
+                    dgv.CreateControl();
+                    dgv.Refresh();
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (dgv != null && txt != null && dgv.Rows.Count > 0)
+                {
+                    ExcelHeaderProfile profile = new ExcelHeaderProfile()
+                    {
+                        ProfileName = txt.Text.Trim().ToUpper()
+                    };
+
+                    List<ExcelColumnMap> excelColumnMaps = new List<ExcelColumnMap>();
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+
+                        string header = row.Cells[0].Value?.ToString() ?? string.Empty;
+
+                        if (string.IsNullOrEmpty(header.Trim()))
+                        {
+                            continue;
+                        }
+
+                        string property = row.Cells[1].Value?.ToString() ?? string.Empty;
+                        excelColumnMaps.Add(new ExcelColumnMap() { Header = header, Property = property });
+                    }
+
+                    if(excelColumnMaps.Count > 0 && !string.IsNullOrEmpty(txt.Text.Trim().ToUpper()))
+                    {
+                        profile.Columns = excelColumnMaps;
+                        profiles.Add(profile);
+                    }                    
+                }
+            }
+
+            return profiles;
+        }
+
+        public void LoadExcelConfig()
+        {
+            tabControlExcelContainer.TabPages.Clear();
+
+            if (_settings == null) return;
+
+            if (!_settings.ExcelHeaderProfiles.IsNullOrEmpty())
+            {
+                foreach (var profile in _settings.ExcelHeaderProfiles)
+                {
+                    TabPage tabPage = new TabPage(profile.ProfileName)
+                    {
+                        Padding = new Padding(8)
+                    };
+
+                    // >>> DataGridView Container <<<
+                    Panel container_Grid = new Panel()
+                    {
+                        Dock = DockStyle.Fill,
+                        Padding = new Padding(0)
+                    };
+
+                    DataGridView dgv = new DataGridView
+                    {
+                        Name = Guid.NewGuid().ToString(),
+                        Dock = DockStyle.Fill,
+                        BorderStyle = BorderStyle.None,
+                        BackgroundColor = System.Drawing.Color.White,
+                        ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                        RowHeadersWidth = 35,
+                        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                        RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing,
+                        AllowUserToAddRows = true,
+                        AllowUserToDeleteRows = true,
+                        ReadOnly = false
+                    };
+
+                    var bindingList = new BindingList<ExcelColumnMap>(profile.Columns);
+                    dgv.DataSource = bindingList;
+
+                    foreach (DataGridViewColumn col in dgv.Columns)
+                        col.ReadOnly = false;
+
+                    container_Grid.Controls.Add(dgv);
+
+                    // >>> Divisor entre TextBox e Grid <<<
+                    Panel divisor_02 = new Panel()
+                    {
+                        Dock = DockStyle.Top,
+                        Height = 8
+                    };
+
+                    // >>> TextBox <<<
+                    TextBox txt = new TextBox()
+                    {
+                        Dock = DockStyle.Fill,
+                        Text = profile.ProfileName
+                    };
+                    txt.Font = new System.Drawing.Font(txt.Font.FontFamily, 10, txt.Font.Style);
+
+                    // >>> Delete Button <<<
+                    Button btnDeleteTab = new Button()
+                    {
+                        Dock = DockStyle.Right,
+                        Width = 30,
+                        Image = Properties.Resources.trash_bin_20_20,
+                        ImageAlign = ContentAlignment.MiddleCenter,
+                        Cursor = Cursors.Hand,
+                        //Text = "X",
+                        //BackColor = System.Drawing.Color.FromArgb(220, 53, 69),
+                        //ForeColor = System.Drawing.Color.White,
+                        //FlatStyle = FlatStyle.Flat
+                    };
+                    btnDeleteTab.FlatAppearance.BorderSize = 0;
+
+                    // Evento de deletar a TabPage
+                    btnDeleteTab.Click += (s, e) =>
+                    {
+                        if (tabControlExcelContainer.TabPages.Count > 1)
+                        {
+                            tabControlExcelContainer.TabPages.Remove(tabPage);
+
+                        }
+                    };
+
+                    // >>> Horizontal Container for TextBox + Button <<<
+                    Panel horizontalContainer = new Panel()
+                    {
+                        Dock = DockStyle.Top,
+                        Height = 30
+                    };
+                    horizontalContainer.Controls.Add(txt);
+                    horizontalContainer.Controls.Add(btnDeleteTab);
+
+                    // >>> Label do título <<<
+                    Label lbl = new Label()
+                    {
+                        Dock = DockStyle.Top,
+                        Text = "Nome do perfil:",
+                        AutoSize = false,
+                        Height = 24,
+                        ForeColor = System.Drawing.Color.FromArgb(46, 80, 159),
+                        Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold)
+                    };
+
+                    // >>> Divisor topo <<<
+                    Panel divisor_01 = new Panel()
+                    {
+                        Dock = DockStyle.Top,
+                        Height = 8
+                    };
+
+                    // >>> Ordem de Adição (Bottom-Up) <<<
+                    tabPage.Controls.Add(container_Grid);    // Fill (DGV)
+                    tabPage.Controls.Add(divisor_02);        // Spacer
+                    tabPage.Controls.Add(horizontalContainer); // TextBox + Button
+                    tabPage.Controls.Add(lbl);               // Title
+                    tabPage.Controls.Add(divisor_01);        // Top Spacer
+
+                    tabControlExcelContainer.Controls.Add(tabPage);
+                }
+            }
+        }
+
+
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
@@ -176,6 +479,7 @@ namespace tcm_edi_audit_core_new
             {
                 if (_settings != null)
                 {
+                    _settings.ExcelHeaderProfiles = GetCurrentExcelConfig();
                     _settings.ExcelWorkSheetname = txtWorkSheetName.Text.Trim();
 
 
@@ -215,6 +519,7 @@ namespace tcm_edi_audit_core_new
 
                 LoadDatagridView();
                 LoadComboBox();
+                LoadExcelConfig();
                 _settingsBackup?.Dispose();
             }
         }
@@ -233,6 +538,11 @@ namespace tcm_edi_audit_core_new
         {
             this.Validate();
             _settingsBackup?.Dispose();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            AddExcelProfile();
         }
     }
 }

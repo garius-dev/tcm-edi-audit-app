@@ -73,6 +73,16 @@ namespace tcm_edi_audit_core_new.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap circle_check_icon_green_24_24 {
+            get {
+                object obj = ResourceManager.GetObject("circle-check-icon-green-24-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap circle_green_16_16 {
             get {
                 object obj = ResourceManager.GetObject("circle-green-16-16", resourceCulture);
@@ -173,6 +183,16 @@ namespace tcm_edi_audit_core_new.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap plus_icon_24_24 {
+            get {
+                object obj = ResourceManager.GetObject("plus-icon-24-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sqare_check_icon {
             get {
                 object obj = ResourceManager.GetObject("sqare-check-icon", resourceCulture);
@@ -206,6 +226,16 @@ namespace tcm_edi_audit_core_new.Properties {
         internal static System.Drawing.Bitmap sqare_uncheck_icon_dark {
             get {
                 object obj = ResourceManager.GetObject("sqare-uncheck-icon-dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trash_bin_20_20 {
+            get {
+                object obj = ResourceManager.GetObject("trash-bin-20-20", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

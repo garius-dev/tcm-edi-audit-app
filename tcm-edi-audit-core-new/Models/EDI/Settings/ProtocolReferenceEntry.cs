@@ -97,6 +97,11 @@ namespace tcm_edi_audit_core_new.Models.EDI.Settings
         public string Header { get; set; }
         public string Property { get; set; }
 
+        public ExcelColumnMap()
+        {
+            
+        }
+
         public ExcelColumnMap(string header, string property)
         {
             this.Header = header;

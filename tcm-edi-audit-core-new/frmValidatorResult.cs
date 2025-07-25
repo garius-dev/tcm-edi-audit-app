@@ -33,6 +33,12 @@ namespace tcm_edi_audit_core_new
         {
             LoadDatagridView();
             PopulateComboboxes();
+
+            if (_validationResults.IsNullOrEmpty())
+            {
+                btnSaveFiles.Enabled = false;
+                btnExpandSelection.Enabled = false;
+            }
         }
 
         private void LoadDatagridView()

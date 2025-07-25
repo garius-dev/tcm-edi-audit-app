@@ -47,14 +47,16 @@ namespace tcm_edi_audit_core_new
             return flattenExcelEntries;
         }
 
+        
+
         private void frmExcelEntries_Load(object sender, EventArgs e)
         {
-            _defaultWorksheet = _defaultWorksheet == "Todos" ? null : _defaultWorksheet;
+            _defaultWorksheet = _defaultWorksheet == "TODOS" ? null : _defaultWorksheet;
             if (_worksheets != null)
             {
                 foreach (var worksheet in _worksheets)
                 {
-                    if(_defaultWorksheet != null && _defaultWorksheet != worksheet.SheetName)
+                    if(_defaultWorksheet != null && _defaultWorksheet != worksheet.SheetName?.Trim().ToUpper())
                     {
                         continue;
                     }

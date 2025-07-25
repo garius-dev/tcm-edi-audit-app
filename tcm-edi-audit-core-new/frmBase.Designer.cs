@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             pnlMain = new Panel();
+            pictureBox1 = new PictureBox();
             button4 = new Button();
             button3 = new Button();
             button2 = new Button();
@@ -38,6 +39,7 @@
             pnlTopSideContainer = new Panel();
             picLogo = new PictureBox();
             pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             pnlTopFrame.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -45,16 +47,27 @@
             // pnlMain
             // 
             pnlMain.BackColor = Color.White;
+            pnlMain.Controls.Add(pictureBox1);
             pnlMain.Controls.Add(button4);
             pnlMain.Controls.Add(button3);
             pnlMain.Controls.Add(button2);
             pnlMain.Controls.Add(button1);
             pnlMain.Controls.Add(pnlTopFrame);
             pnlMain.Dock = DockStyle.Fill;
-            pnlMain.Location = new Point(8, 8);
+            pnlMain.Location = new Point(6, 6);
+            pnlMain.Margin = new Padding(2);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(784, 434);
+            pnlMain.Size = new Size(628, 348);
             pnlMain.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.plus_icon_24_24;
+            pictureBox1.Location = new Point(375, 157);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(100, 50);
+            pictureBox1.TabIndex = 10;
+            pictureBox1.TabStop = false;
             // 
             // button4
             // 
@@ -64,9 +77,10 @@
             button4.FlatAppearance.MouseOverBackColor = Color.FromArgb(0, 105, 217);
             button4.FlatStyle = FlatStyle.Flat;
             button4.ForeColor = Color.White;
-            button4.Location = new Point(215, 211);
+            button4.Location = new Point(172, 169);
+            button4.Margin = new Padding(2);
             button4.Name = "button4";
-            button4.Size = new Size(140, 65);
+            button4.Size = new Size(112, 52);
             button4.TabIndex = 9;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = false;
@@ -79,9 +93,10 @@
             button3.FlatAppearance.MouseOverBackColor = Color.FromArgb(90, 98, 104);
             button3.FlatStyle = FlatStyle.Flat;
             button3.ForeColor = Color.White;
-            button3.Location = new Point(22, 211);
+            button3.Location = new Point(18, 169);
+            button3.Margin = new Padding(2);
             button3.Name = "button3";
-            button3.Size = new Size(140, 65);
+            button3.Size = new Size(112, 52);
             button3.TabIndex = 8;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = false;
@@ -94,9 +109,10 @@
             button2.FlatAppearance.MouseOverBackColor = Color.FromArgb(200, 35, 51);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(215, 100);
+            button2.Location = new Point(172, 80);
+            button2.Margin = new Padding(2);
             button2.Name = "button2";
-            button2.Size = new Size(140, 65);
+            button2.Size = new Size(112, 52);
             button2.TabIndex = 7;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = false;
@@ -109,9 +125,10 @@
             button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(33, 136, 56);
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
-            button1.Location = new Point(22, 100);
+            button1.Location = new Point(18, 80);
+            button1.Margin = new Padding(2);
             button1.Name = "button1";
-            button1.Size = new Size(140, 65);
+            button1.Size = new Size(112, 52);
             button1.TabIndex = 6;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = false;
@@ -124,9 +141,10 @@
             pnlTopFrame.Controls.Add(picLogo);
             pnlTopFrame.Dock = DockStyle.Top;
             pnlTopFrame.Location = new Point(0, 0);
+            pnlTopFrame.Margin = new Padding(2);
             pnlTopFrame.Name = "pnlTopFrame";
-            pnlTopFrame.Padding = new Padding(8);
-            pnlTopFrame.Size = new Size(784, 80);
+            pnlTopFrame.Padding = new Padding(6);
+            pnlTopFrame.Size = new Size(628, 64);
             pnlTopFrame.TabIndex = 5;
             // 
             // lblFormTitle
@@ -134,10 +152,11 @@
             lblFormTitle.Dock = DockStyle.Fill;
             lblFormTitle.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblFormTitle.ForeColor = Color.FromArgb(46, 80, 159);
-            lblFormTitle.Location = new Point(141, 8);
+            lblFormTitle.Location = new Point(112, 6);
+            lblFormTitle.Margin = new Padding(2, 0, 2, 0);
             lblFormTitle.Name = "lblFormTitle";
-            lblFormTitle.Padding = new Padding(16, 0, 0, 0);
-            lblFormTitle.Size = new Size(385, 64);
+            lblFormTitle.Padding = new Padding(13, 0, 0, 0);
+            lblFormTitle.Size = new Size(310, 52);
             lblFormTitle.TabIndex = 3;
             lblFormTitle.Text = "EDI AUDIT";
             lblFormTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -145,35 +164,39 @@
             // pnlTopSideContainer
             // 
             pnlTopSideContainer.Dock = DockStyle.Right;
-            pnlTopSideContainer.Location = new Point(526, 8);
+            pnlTopSideContainer.Location = new Point(422, 6);
+            pnlTopSideContainer.Margin = new Padding(2);
             pnlTopSideContainer.Name = "pnlTopSideContainer";
-            pnlTopSideContainer.Size = new Size(250, 64);
+            pnlTopSideContainer.Size = new Size(200, 52);
             pnlTopSideContainer.TabIndex = 2;
             // 
             // picLogo
             // 
             picLogo.Dock = DockStyle.Left;
             picLogo.Image = Properties.Resources.logo_novo;
-            picLogo.Location = new Point(8, 8);
+            picLogo.Location = new Point(6, 6);
+            picLogo.Margin = new Padding(2);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(133, 64);
+            picLogo.Size = new Size(106, 52);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
             // 
             // frmBase
             // 
-            AutoScaleDimensions = new SizeF(120F, 120F);
+            AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 80, 159);
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(640, 360);
             Controls.Add(pnlMain);
+            Margin = new Padding(2);
             Name = "frmBase";
-            Padding = new Padding(8);
+            Padding = new Padding(6);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "EDI AUDIT - Home";
             Load += frmBase_Load;
             pnlMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             pnlTopFrame.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
@@ -190,5 +213,6 @@
         private Button button3;
         private Button button2;
         private Button button1;
+        private PictureBox pictureBox1;
     }
 }
