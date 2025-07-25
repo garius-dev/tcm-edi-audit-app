@@ -33,12 +33,11 @@ namespace tcm_edi_audit_core_new
         {
             InitializeComponent();
 
-            _settings = new AppSettings();
             _localSettings = new AppSettingsLocal();
             _configManagerService = new ConfigManagerService();
 
             _fileManagerService = new FileManagerService();
-            //_excelEntries = new List<ExcelEntry>();
+            _excelEntries = new List<ExcelEntry>(); // Initialize the field to avoid CS8618
             _excelService = new ExcelService();
             _excelWorksheets = new List<ExcelSheetParsedResult<ExcelEntry>>();
         }
@@ -46,6 +45,8 @@ namespace tcm_edi_audit_core_new
 
         private async Task<DialogResult> LoadConfigForm()
         {
+            if (_settings == null) { throw new ArgumentNullException(nameof(AppSettings)); }
+
             DialogResult result;
 
             using (frmSplashScreen splash = new frmSplashScreen())
@@ -96,13 +97,28 @@ namespace tcm_edi_audit_core_new
             }
         }
 
-        private bool TryLoadExcelFile()
+        private bool TryLoadExcelFile(bool forceUpload)
         {
-            if (!string.IsNullOrEmpty(txtExcelFilePath.Text))
+            cmbWorksheet.Enabled = false;
+            btnViewWorksheet.Enabled = false;
+            btnLockWorksheet.Enabled = false;
+
+            if (!forceUpload)
+            {
+                if (_excelWorksheets.IsNullOrEmpty()) { return false; }
+
+                PopulateComboboxes();
+
+                return true;
+            }
+
+            if (!string.IsNullOrEmpty(_localSettings.ReferenceExcelFilePath))
             {
                 try
                 {
                     _excelWorksheets = _excelService.ExtractStructuredDataFromExcel<ExcelEntry>(_localSettings.ReferenceExcelFilePath, _settings);
+
+                    PopulateComboboxes();
 
                     return true;
 
@@ -120,6 +136,38 @@ namespace tcm_edi_audit_core_new
             return false;
         }
 
+        private bool TrySetDefaultWorkSheet(string? workSheet = null)
+        {
+
+            if (workSheet == null)
+            {
+                _excelEntries = new List<ExcelEntry>();
+                btnAudit.Enabled = false;
+            }
+
+            if (workSheet == "Todos")
+            {
+                _excelEntries = _excelWorksheets.SelectMany(w => w.Entries).ToList();
+                return true;
+            }
+            else
+            {
+                var foundWorkSheet = _excelWorksheets.FirstOrDefault(w => w.SheetName == workSheet);
+
+                if (foundWorkSheet != null)
+                {
+                    _excelEntries = foundWorkSheet.Entries;
+                    return true;
+
+                }
+                else
+                {
+                    _excelEntries = new List<ExcelEntry>();
+                    return false;
+                }
+            }
+        }
+
         public void PopulateComboboxes()
         {
             if (!_excelWorksheets.IsNullOrEmpty())
@@ -130,11 +178,26 @@ namespace tcm_edi_audit_core_new
                             .OrderBy(c => c)
                             .ToList();
 
-                worksheets.Insert(0, "Selecione uma planilha");
-                worksheets.Insert(1, "Todos");
+                //worksheets.Insert(0, "Selecione uma planilha");
+                worksheets.Insert(0, "Todos");
+
                 cmbWorksheet.DataSource = null;
                 cmbWorksheet.DataSource = worksheets;
+                cmbWorksheet.Enabled = true;
+
+                btnViewWorksheet.Enabled = true;
+                btnLockWorksheet.Enabled = true;
             }
+            else
+            {
+                cmbWorksheet.DataSource = null;
+                cmbWorksheet.Enabled = false;
+
+                btnViewWorksheet.Enabled = false;
+                btnLockWorksheet.Enabled = false;
+            }
+
+            btnLockWorksheet.SetCheckState(false, Properties.Resources.circle_check_icon_24_24, Properties.Resources.circle_solid_icon_24_24);
         }
 
         private async Task<List<EdiValidationResult>> ValidateFiles(bool tryFixIt = false)
@@ -201,6 +264,19 @@ namespace tcm_edi_audit_core_new
                 this.Close();
             }
 
+            if (!string.IsNullOrEmpty(_localSettings.ReferenceExcelFilePath))
+            {
+                if (!TryLoadExcelFile(true))
+                {
+                    _localSettings.ReferenceExcelFilePath = string.Empty;
+                    _configManagerService.SaveSettings(_localSettings);
+                }
+            }
+
+            txtExcelFilePath.Text = _localSettings.ReferenceExcelFilePath;
+            txtFolderRootPath.Text = _localSettings.SourceFolderPath;
+            txtOutputPath.Text = _localSettings.OutputFolderPath;
+
             this.Enabled = true;
         }
 
@@ -253,11 +329,13 @@ namespace tcm_edi_audit_core_new
                     string selectedFile = openFileDialog.FileName;
                     txtExcelFilePath.Text = selectedFile;
 
-                    if (TryLoadExcelFile())
+                    _localSettings.ReferenceExcelFilePath = selectedFile;
+                    _configManagerService.SaveSettings(_localSettings);
+
+                    if (TryLoadExcelFile(true))
                     {
-                        _localSettings.ReferenceExcelFilePath = selectedFile;
-                        _configManagerService.SaveSettings(_localSettings);
-                    }                    
+                        
+                    }
                 }
             }
         }
@@ -298,40 +376,10 @@ namespace tcm_edi_audit_core_new
 
         private void cmbWorksheet_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
-        private bool TrySetDefaultWorkSheet(string? workSheet = null)
-        {
 
-            if(workSheet == null)
-            {
-                _excelEntries = new List<ExcelEntry>();
-                btnAudit.Enabled = false;
-            }
-
-            if(workSheet == "Todos")
-            {
-                _excelEntries = _excelWorksheets.SelectMany(w => w.Entries).ToList();
-                return true;
-            }
-            else
-            {
-                var foundWorkSheet = _excelWorksheets.FirstOrDefault(w => w.SheetName == workSheet);
-
-                if (foundWorkSheet != null)
-                {
-                    _excelEntries = foundWorkSheet.Entries;
-                    return true;
-
-                }
-                else
-                {
-                    _excelEntries = new List<ExcelEntry>();
-                    return false;
-                }
-            }                
-        }
 
         private void btnLockWorksheet_Click(object sender, EventArgs e)
         {

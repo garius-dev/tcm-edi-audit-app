@@ -138,6 +138,7 @@
             // btnLockWorksheet
             // 
             btnLockWorksheet.Cursor = Cursors.Hand;
+            btnLockWorksheet.Enabled = false;
             btnLockWorksheet.Image = Properties.Resources.circle_solid_icon_24_24;
             btnLockWorksheet.Location = new Point(321, 29);
             btnLockWorksheet.Name = "btnLockWorksheet";
@@ -149,6 +150,7 @@
             // btnViewWorksheet
             // 
             btnViewWorksheet.Cursor = Cursors.Hand;
+            btnViewWorksheet.Enabled = false;
             btnViewWorksheet.Image = Properties.Resources.eye_icon_24_24;
             btnViewWorksheet.Location = new Point(275, 29);
             btnViewWorksheet.Name = "btnViewWorksheet";
@@ -467,6 +469,7 @@
             btnAudit.BackColor = Color.FromArgb(40, 167, 69);
             btnAudit.Cursor = Cursors.Hand;
             btnAudit.Dock = DockStyle.Right;
+            btnAudit.Enabled = false;
             btnAudit.FlatAppearance.BorderSize = 0;
             btnAudit.FlatAppearance.MouseDownBackColor = Color.FromArgb(30, 126, 52);
             btnAudit.FlatAppearance.MouseOverBackColor = Color.FromArgb(33, 136, 56);
