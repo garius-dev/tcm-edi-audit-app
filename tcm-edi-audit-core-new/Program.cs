@@ -16,6 +16,8 @@ namespace tcm_edi_audit_core_new
             splash.Show();
             splash.Refresh();
 
+            //VivoBook16
+
             frmHome mainForm = new frmHome();
             mainForm.Load += (s, e) => splash.Close();
 
