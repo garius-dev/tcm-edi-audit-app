@@ -244,11 +244,19 @@ namespace tcm_edi_audit_core_new
             //TryLoadExcelFile(false);
             List<ExcelEntry> excelEntries = _excelEntries;
 
+            foreach (var excelEntry in excelEntries)
+            {
+                if (string.IsNullOrEmpty(excelEntry.RequestCode))
+                {
+                    excelEntry.RequestCode = "000001";
+                }
+            }
+
             if (!excelEntries.IsNullOrEmpty())
             {
                 foreach (var excelEntry in excelEntries)
                 {
-                    var files = _fileManagerService.GetEdiFiles(_localSettings.SourceFolderPath, null, $"_{excelEntry.Invoice}");
+                    var files = _fileManagerService.GetEdiFiles(_localSettings.SourceFolderPath, null, $"320_{excelEntry.Invoice}");
 
                     if (!files.IsNullOrEmpty())
                     {
