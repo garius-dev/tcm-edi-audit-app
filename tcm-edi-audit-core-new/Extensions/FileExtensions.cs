@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tcm_edi_audit_core_new.Models.EDI;
+using tcm_edi_audit_core_new.Models.EDI.Settings;
+using tcm_edi_audit_core_new.Services;
 
 namespace tcm_edi_audit_core_new.Extensions
 {
@@ -15,6 +17,8 @@ namespace tcm_edi_audit_core_new.Extensions
                 ? input.Substring(0, totalLength)
                 : input.PadRight(totalLength, ' ');
         }
+
+
 
         public static void CheckOrCreateFolder(string path)
         {
@@ -122,6 +126,67 @@ namespace tcm_edi_audit_core_new.Extensions
 
                 File.Copy(sourcePath, destinationPath);
                 Console.WriteLine("Arquivo copiado com sucesso.");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("Erro: Permissão negada para acessar os arquivos.");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Erro de E/S: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro inesperado: {ex.Message}");
+            }
+        }
+
+        public static void CopyFile350ReplacingIfExists(string sourcePath, string destinationFolder, string invoiceNumber)
+        {
+            FileManagerService _fileManagerService = new FileManagerService();
+
+            if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(destinationFolder))
+            {
+                Console.WriteLine("Erro: Caminho de origem ou destino inválido.");
+                return;
+            }
+
+            if (!Directory.Exists(sourcePath))
+            {
+                Console.WriteLine("Erro: O arquivo de origem não existe.");
+                return;
+            }
+
+            try
+            {
+                // Garante que a pasta de destino exista
+                if (!Directory.Exists(destinationFolder))
+                {
+                    Directory.CreateDirectory(destinationFolder);
+                    Console.WriteLine("Pasta de destino criada.");
+                }
+
+                var files350 = _fileManagerService.GetEdiFiles(sourcePath, null, $"350_{invoiceNumber}");
+
+                if (files350 != null && files350.Any())
+                {
+                    foreach(var file350 in files350)
+                    {
+                        string fileName = Path.GetFileName(file350.FullName);
+                        string destinationPath = Path.Combine(destinationFolder, fileName);
+
+                        if (File.Exists(destinationPath))
+                        {
+                            File.Delete(destinationPath);
+                            Console.WriteLine("Arquivo de destino existente removido.");
+                        }
+
+                        File.Copy(file350.FullName, destinationPath);
+                        Console.WriteLine("Arquivo copiado com sucesso.");
+                    }
+                }
+
+                
             }
             catch (UnauthorizedAccessException)
             {

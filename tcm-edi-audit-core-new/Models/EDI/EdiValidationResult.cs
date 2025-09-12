@@ -19,6 +19,7 @@ namespace tcm_edi_audit_core_new.Models.EDI
         public Image? StatusIcon { get; set; }
         public FileInfo? File { get; set; }
         public string Protocol { get; set; } = string.Empty;
+        public string Invoice { get; set; } = string.Empty;
         public List<string> Errors { get; set; } = new List<string>();
         public List<string> Warnings { get; set; } = new List<string>();
         public List<EdiLine> EdiLines { get; set; } = new List<EdiLine>();

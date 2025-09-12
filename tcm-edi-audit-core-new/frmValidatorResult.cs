@@ -146,10 +146,14 @@ namespace tcm_edi_audit_core_new
                             string fixedFilePath = Path.Combine(outputResultFolderPath, item.File.Name);
 
                             FileExtensions.CreateOrReplaceFile(fixedFilePath, fixedFileContent);
+                            FileExtensions.CopyFile350ReplacingIfExists(item.File.DirectoryName!, outputResultFolderPath, item.Invoice);
                         }
                         else if (item.Status == EdiValidationStatus.Success && item.File != null)
                         {
+                            
                             FileExtensions.CopyFileReplacingIfExists(item.File.FullName, outputResultFolderPath);
+                            FileExtensions.CopyFile350ReplacingIfExists(item.File.DirectoryName!, outputResultFolderPath, item.Invoice);
+
                         }
                         else if (item.Status == EdiValidationStatus.Error && item.File != null)
                         {

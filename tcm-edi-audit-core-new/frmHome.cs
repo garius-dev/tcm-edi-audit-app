@@ -269,6 +269,7 @@ namespace tcm_edi_audit_core_new
                             EdiValidationResult validatonResult = validatorService.Validate(parseResult, excelEntries, excelEntry.Invoice, tryFixIt);
                             validatonResult.File = file;
                             validatonResult.Protocol = excelEntry.Protocol;
+                            validatonResult.Invoice = excelEntry.Invoice;
                             validatonResults.Add(validatonResult);
                         }
                     }
